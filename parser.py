@@ -55,7 +55,7 @@ def p_method_def(p):
 	p[0] = p[1] + p[2] + p[3] + p[4] + p[5] + p[7]
 
 def p_method_s(p):
-	'method_s : '!' | '?' | '
+	'method_s : \'!\' | \'?\' | '
 	p[0] = p[1]
 
 def p_method_pa_assig_cont(p):
