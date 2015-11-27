@@ -67,7 +67,7 @@ def p_method_pa_single_cont(p):
 	p[0] = p[1] + p[2] + p[3]
 
 def p_method_pa_assig_end(p):
-	'IDENTIFIER \'=\' value'
+	'method_p : IDENTIFIER \'=\' value'
 	p[0] = p[1] + p[2] + p[3]
 
 def p_method_pa_single_end(p):
@@ -103,7 +103,7 @@ def p_if_def_complex(p):
 	p[0] = p[1] + p[2]
 
 def p_if_def_simple(p):
-	'condition \'?\' ins \':\' ins'
+	'if_def : condition \'?\' ins \':\' ins'
 	p[0] = p[1] + p[2] + p[3] + p[4]
 
 def p_if_ins(p):
@@ -118,6 +118,81 @@ def p_while_def(p):
 	'while_def : WHILE condition new_cmd'
 	p[0] = p[1] + p[2] + p[3]
 
+def p_else_def(p):
+	'else_def : ELSE new_cmd'
+	p[0] = p[1] + p[2]
+
+def p_else_def_empty(p):
+	'else_def : '
+	p[0] = p[1]
+
+def p_case_def(p):
+	'case_def : CASE case_stmt case_when'
+	p[0] = p[1] + p[2] + p[3]
+
+def p_case_stmt(p):
+	'case_stmt : vars | value'
+	p[0] = p[1]
+
+def p_case_when_cont(p):
+	'case_when : WHEN condition new_cmd case_when'
+	p[0] = p[1] + p[2] + p[3] + p[4]
+
+def p_case_when_end(p):
+	'case_when : WHEN condition new_cmd'
+	p[0] = p[1] + p[2] + p[3]
+
+def p_exception_def(p):
+	'exception_def : BEGIN new_cmd rescue'
+	p[0] = p[1] + p[2] + p[3]
+
+def p_rescue_def(p):
+	'rescue : RESCUE name new_cmd'
+	p[0] = p[1] + p[2] + p[3]
+
+def p_rescue_var_def(p):
+	'rescue : RESCUE vars \'=>\' name new_cmd'
+	p[0] = p[1] + p[2] + p[3] + p[4]
+
+def p_condition_single(p):
+	'condition : value | vars'
+	p[0] = p[1]
+
+def p_condition_def(p):
+	'condition : value operator | vars operator'
+	p[0] = p[1] + p[2]
+
+def p_parameter_end(p):
+	'parameter : value'
+	p[0] = p[1]
+
+def p_parameter_def(p):
+	'parameter : value \',\' parameter'
+	p[0] = p[1] + p[2] + p[3]
+
+def p_value(p):
+	'value : STRING | FIXNUM | NIL | FLOAT | ARRAY | HASH | SYMBOL | TRUE | FALSE'
+	p[0] = p[1]
+
+def p_name_single(p):
+	'name : CONSTANT'
+	p[0] = p[1]
+
+def p_name_complex(p):
+	'name : CONSTANT NAMESPACE_CHARACTER name'
+	p[0] = p[1] + p[2] + p[3]
+
+def p_operator(p):
+	'operator : LOGICAL_OPERATORS | COMPARATOR_OPERATORS | OPERATORS'
+	p[0] = p[1]
+
+def p_vars(p):
+	'vars : INSTACE_VAR | CLASS_VAR | GLOBAL_VAR | PREDEF_VAR'
+	p[0] = p[1]
+
+def p_new_cmd(p):
+	'new_cmd : NEW_LINE TAB ins'
+	p[0] = p[1] + p[2] + p[3]
 
 
 
