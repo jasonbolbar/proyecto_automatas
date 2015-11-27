@@ -79,6 +79,11 @@ t_OPEN_PARENTH = r'\('
 t_CLOSE_PARENTH = r'\)'	
 t_OPEN_KEY= r'\('
 t_CLOSE_KEY = r'\)'	
+
+def t_error (t):
+    print ("Error léxico")
+    t.lexer.skip(1)
+
 lex.lex()
 
 def p_main(p):
@@ -318,5 +323,8 @@ def p_vars(p):
 def p_new_cmd(p):
 	'new_cmd : NEW_LINE TAB ins'
 	p[0] = p[1] + p[2] + p[3]
+
+def p_error(p):
+    print ("Error sintactico")	
 
 yacc.yacc()
