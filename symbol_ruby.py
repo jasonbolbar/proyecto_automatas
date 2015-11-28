@@ -44,17 +44,17 @@ t_WHILE = r'\[\?\]'
 # t_YIELD = r'\{>\}'
 t_IDENTIFIER = r'([a-z]|\_)(\w)+'
 t_CONSTANT = r'[A-Z](\w)+'
-t_INSTACE_VAR = r'@t_IDENTIFIER'
-t_CLASS_VAR = r'@@t_IDENTIFIER'
-t_GLOBAL_VAR = r'\$t_IDENTIFIER'
+t_INSTACE_VAR = r'@([a-z]|\_)(\w)+'
+t_CLASS_VAR = r'@@([a-z]|\_)(\w)+'
+t_GLOBAL_VAR = r'\$([a-z]|\_)(\w)+'
 t_PREDEF_VAR = r'\$((\!|ERROR_INFO)|(\@|ERROR_POSITION)|(\&|MATCH)|(\`|PREMATCH)|(\'|POSTMATCH)|(\+|LAST_PARENT_MATCH)|[0-9]|(\~|LAST_MATCH_INFO)|(\=|IGNORE_CASE)|(\\|INPUT_RECORD_SEPARATOR|RS|\-0)|(\/|OUTPUT_RECORD_SEPARATOR|ORS)|(\,|OUTPUT_FIELD_SEPARATOR_OFS)|(\;|FIELD_SEPARATOR|FS|\-F)|(\.|INPUT_LINE_NUMBER|NR)|(\<|DEFAULT_INPUT)|FILENAME|(\>|DETAULT_OUTPUT)|(\_|LAST_READ_LINE)|\*|(\$|PROCESS_ID|PID|Process\.pid)|(\?|CHILD_STATUS)|(\:|LOAD_PATH)|(\"|LOADED_FEATURES|\-I)|stderr|stin|(\-d|DEBUG)|(\-K|KCODE)|(\-v|VERBOSE)|\-i|\-l|\-p|\-w)'
 # t_PREDEF_CONST = r'\_\_(FILE|LINE|dir)\_\_'
 t_FIXNUM = r'\-?((0((x|X)([0-9]|[a-f]|[A-F])+|(b|B)([0-1])+|([0-7]+)))|([1-9]+(\_?[0-9])*))'
 t_FLOAT = r'\-?[1-9]+\.[0-9]+(e\-?[0-9]+)?'
 t_STRING = r'\"([^\\"](\\")?(\\)?)*\"|\'([^\'](\\\\)?(\')?)*\''
-t_ARRAY = r'\[(\s)*((.)(\s)*(\,[^,]+)*)?\]|\%w(\(.*\)|t_STRING)'
-t_HASH = r'{((\s)*("[^"]+"|\'[^\']+PIPE[^\']\'|:\w+(\s)*=>|\w+:)(\s)*[^,]+,?)*}'
-t_SYMBOL = r'\:(t_CONSTANT|variable)'
+t_ARRAY = r'\[(\s)*((.)(\s)*(\,[^,]+)*)?\]|\%w(\(.*\)|(\"([^\\"](\\")?(\\)?)*\"|\'([^\'](\\\\)?(\')?)*\'))'
+t_HASH = r'{((\s)*("[^"]+"|\'[^\']+\|[^\']\'|:\w+(\s)*=>|\w+:)(\s)*[^,]+,?)*}'
+t_SYMBOL = r'\:([A-Z](\w)+|([a-z]|\_)(\w)+)'
 t_TRUE = r'TRUE|true'
 t_FALSE = r'FALSE|false'
 # t_RANGE =
@@ -62,7 +62,7 @@ t_FALSE = r'FALSE|false'
 t_ASSIGNATION_OPERATORS = r'\+|\-|\*\*?|\/'
 t_OPERATORS = r'\+|\-|\*\*?|\/'
 t_LOGICAL_OPERATORS = r'\|\||\&\&'
-t_COMPARATOR_OPERATORS = r'(\<|\>|\t_EQUAL|\!)+\t_EQUAL'
+t_COMPARATOR_OPERATORS = r'(\<|\>|\=|\!)+\='
 # t_COMMENTS = r'#(.)*|\=begin(.|\n)*\=end'
 # t_AND = r'and'
 # t_OR = r'or'
@@ -89,10 +89,10 @@ t_ignore = " "
 
 
 def t_error(t):
-    print 'error lexico'
+    print ("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 
-lex.lex(debug=True)
+lex.lex()
 
 
 def p_main(p):
@@ -382,8 +382,11 @@ def p_new_cmd(p):
 
 
 def p_error(p):
-	pdb.set_trace()
-	print 'error sintactico'
+	if p:
+		print("Syntax error at token", p.type)
+		parser.errok()
+	else:
+		print("Syntax error at EOF")	
 
     
 
@@ -404,6 +407,6 @@ def main(argv):
 		elif opt in ('-i','--ifile'):
 			inputfile = arg
 	file = open(inputfile)
-	parser.parse(''.join(file.readlines()))
+	print()
 if __name__ == "__main__":
 	main(sys.argv[1:])
