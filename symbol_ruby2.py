@@ -8,6 +8,7 @@ import getopt
 RESERVED = {
 '__FILE__':'__FILE__',
 '__LINE__':'__LINE__',
+'__dir__':'__DIR__',
 'and':'AND',
 'or':'OR',
 'in':'IN',
@@ -31,14 +32,15 @@ tokens = ('__FILE__','__LINE__','IDENTIFIER','COMMENT','DEF','END','UNLESS',
 	'CLASS','ELSIF','NOT','RETURN','UNDEF','CONSTANT','YIELD','FIXNUM',
 	'FLOAT','STRING','ARRAY','HASH','SYMBOL', 'RANGE', 'OPERATOR','PIPE','COMMA',
 	'EQUAL','COLON','QU_MARK','EXCL_MARK','OPEN_PARENTH','CLOSE_PARENTH','OPEN_KEY',
-	'CLOSE_KEY','SEMICOLON','PERIOD','SPACE','MODULE','RESCUE','TRUE','GT','LT'
+	'CLOSE_KEY','SEMICOLON','PERIOD','SPACE','MODULE','RESCUE','TRUE','GT','LT','SPECIAL_VAR',
+	'__DIR__','DOLLAR','AT'
 	)
 
 
 ################################## ANALISIS LEXICO ############################################
 
 t_COMMENT = r'[ ]*\043[^\n]*'
-t_DEF = r'\$'
+t_DEF = r'\$->'
 t_END = r'\<\$\>'
 t_IF = r'\?\?'
 t_UNLESS = r'\-\?'
@@ -59,7 +61,7 @@ t_CASE = r'\\>\\:'
 t_ELSE = r'\\\?@'
 t_FOR = r'\\{\#\\}'
 t_TRUE = r'TRUE'
-t_WHILE = r'\\[\\\?\\]'
+#t_WHILE = r'\\[\\\?\\]'
 t_CLASS = r'<@>'
 t_ELSIF = r'\\\?@\\\?'
 t_RETURN = r'<\\-'
@@ -98,6 +100,10 @@ t_SEMICOLON = r'\;'
 t_SPACE = r'[ ]+'
 t_GT = r'<'
 t_LT = r'>'
+t_DOLLAR = r'\$'
+t_AT = r'@'
+t_SPECIAL_VAR = r'\$(!|@|&|`|\'|\+|[0-9]|~|=|/|\\|,|;|\.|<|>|_|\*|\$|\?|:|\"|-d|-K|-v|-a|-i|-l|-p|-w)'
+
 
 #### IGNORADOS ####
 
