@@ -1,0 +1,25 @@
+__FILE__
+__LINE__
+say_hello
+#comment test
+$
+<$>
+-?
+??
+&&
+||
+in
+^%
+_/_
+redo
+&*&
+_\_
+{+}
+false
+~@
+'THEN','WHEN','CASE','ELSE','FOR','NIL','RETRY','WHILE','ALIAS',
+
+'CLASS','ELSIF','NOT','RETURN','UNDEF','CONSTANT','YIELD','FIXNUM',
+'FLOAT','STRING','ARRAY','HASH','SYMBOL', 'RANGE', 'OPERATOR','PIPE','COMMA',
+'EQUAL','COLON','QU_MARK','EXCL_MARK','OPEN_PARENTH','CLOSE_PARENTH','OPEN_KEY',
+'CLOSE_KEY','SEMICOLON','PERIOD'
