@@ -30,10 +30,10 @@ tokens = ('__FILE__','__LINE__','IDENTIFIER','COMMENT','DEF','END','UNLESS',
 	'IF','AND','OR','IN','BEGIN','ENSURE','REDO','SUPER','BREAK','DO','FALSE',
 	'NEXT','THEN','WHEN','CASE','ELSE','FOR','NIL','RETRY','WHILE','ALIAS',
 	'CLASS','ELSIF','NOT','RETURN','UNDEF','CONSTANT','YIELD','FIXNUM',
-	'FLOAT','STRING','ARRAY','HASH','SYMBOL', 'RANGE', 'OPERATOR','PIPE','COMMA',
-	'EQUAL','COLON','QU_MARK','EXCL_MARK','OPEN_PARENTH','CLOSE_PARENTH','OPEN_KEY',
-	'CLOSE_KEY','SEMICOLON','PERIOD','SPACE','MODULE','RESCUE','TRUE','GT','LT','SPECIAL_VAR',
-	'__DIR__','DOLLAR','AT','UNTIL'
+	'FLOAT','STRING','HASH','SYMBOL', 'RANGE', 'OPERATOR','PIPE','COMMA',
+	'EQUAL','COLON','QU_MARK','EXCL_MARK','OPEN_PARENTH','CLOSE_PARENTH','OPEN_BRACE',
+	'CLOSE_BRACE','SEMICOLON','PERIOD','SPACE','MODULE','RESCUE','TRUE','GT','LT','SPECIAL_VAR',
+	'__DIR__','DOLLAR','AT','UNTIL','OPEN_SQT','CLOSE_SQT'
 	)
 
 
@@ -61,7 +61,7 @@ t_CASE = r'>:'
 t_ELSE = r'\?@' #MAL
 t_FOR = r'{\#}'
 t_TRUE = r'TRUE'
-t_WHILE = r'\[\?\]' #MAL
+t_WHILE = r'\[\?\]'
 t_UNTIL = r'\]\?\['
 t_CLASS = r'<@>'
 t_ELSIF = r'\?@\?'
@@ -78,7 +78,7 @@ def t_IDENTIFIER(t):
 t_FIXNUM = r'\-?((0((x|X)([0-9]|[a-f]|[A-F])+|(b|B)([0-1])+|([0-7]+)))|([1-9]+(\_?[0-9])*))'
 t_FLOAT = r'\-?[1-9]+\.[0-9]+(e\-?[0-9]+)?'
 t_STRING = r'\"([^\\"](\\")?(\\)?)*\"|\'([^\'](\\\\)?(\')?)*\''
-t_ARRAY = r'\[(\s)*((.)(\s)*(\,[^,]+)*)?\]|\%w(\(.*\)|\"([^\\"](\\")?(\\)?)*\"|\'([^\'](\\\\)?(\')?)*\')'
+#t_ARRAY = r'\[(\s)*((.)(\s)*(\,[^,]+)*)?\]|\%w(\(.*\)|\"([^\\"](\\")?(\\)?)*\"|\'([^\'](\\\\)?(\')?)*\')'
 t_HASH = r'{((\s)*("[^"]+"|\'[^\']+\|[^\']\'|:\w+(\s)*=>|\w+:)(\s)*[^,]+,?)*}'
 t_SYMBOL = r'\:([A-Z](\w)+|([a-z]|\_)(\w)*)'
 t_RANGE = r'((-?\d+.?\d+)|(\'[^\']+\')|("[^"]+"))(..|...)((-?\d+.?\d+)|(\'[^\']+\')|("[^"]+"))'
@@ -94,8 +94,10 @@ t_QU_MARK = r'\?'
 t_EXCL_MARK = r'\!'
 t_OPEN_PARENTH = r'\('
 t_CLOSE_PARENTH = r'\)'
-t_OPEN_KEY = r'\('
-t_CLOSE_KEY = r'\)'
+t_OPEN_BRACE = r'\{'
+t_CLOSE_BRACE = r'\}'
+t_OPEN_SQT = r'\['
+t_CLOSE_SQT = r'\]'
 t_PERIOD = r'\.'
 t_SEMICOLON = r'\;'
 t_SPACE = r'[ ]+'
