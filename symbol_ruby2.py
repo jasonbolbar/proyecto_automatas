@@ -33,7 +33,7 @@ tokens = ('__FILE__','__LINE__','IDENTIFIER','COMMENT','DEF','END','UNLESS',
 	'FLOAT','STRING','ARRAY','HASH','SYMBOL', 'RANGE', 'OPERATOR','PIPE','COMMA',
 	'EQUAL','COLON','QU_MARK','EXCL_MARK','OPEN_PARENTH','CLOSE_PARENTH','OPEN_KEY',
 	'CLOSE_KEY','SEMICOLON','PERIOD','SPACE','MODULE','RESCUE','TRUE','GT','LT','SPECIAL_VAR',
-	'__DIR__','DOLLAR','AT'
+	'__DIR__','DOLLAR','AT','UNTIL'
 	)
 
 
@@ -43,30 +43,31 @@ t_COMMENT = r'[ ]*\043[^\n]*'
 t_DEF = r'\$->'
 t_END = r'\<\$\>'
 t_IF = r'\?\?'
-t_UNLESS = r'\-\?'
+t_UNLESS = r'\-\?' #MAL
 t_AND = r'&&'
 t_OR = r'\|\|'
 t_BEGIN = r'\^%'
-t_ENSURE = r'\_\/\_'
+t_ENSURE = r'\_\/\_' #MAL
 t_MODULE = r'<@@>'
 t_SUPER = r'&\*&'
-t_BREAK = r'_\\_'
+t_BREAK = r'_\\_' #MAL
 t_DO = r'{\+}'
 t_FALSE = r'FALSE'
 t_NEXT = r'~@'
-t_RESCUE = r'%\\\^'
-t_THEN = r'\\->'
+t_RESCUE = r'%\^'
+t_THEN = r'\->'
 t_WHEN = r'~:'
 t_CASE = r'>:'
-t_ELSE = r'\\\?@'
+t_ELSE = r'\?@' #MAL
 t_FOR = r'{\#}'
 t_TRUE = r'TRUE'
-#t_WHILE = r'\\[\\\?\\]'
+t_WHILE = r'\[\?\]' #MAL
+t_UNTIL = r'\]\?\['
 t_CLASS = r'<@>'
 t_ELSIF = r'\?@\?'
-t_RETURN = r'<\\-'
+t_RETURN = r'<\-'
 t_CONSTANT = r'[A-Z](\w)*'
-t_YIELD = r'\\{>\\}'
+t_YIELD = r'{>}'
 
 def t_IDENTIFIER(t):
     r'([a-z]|\_)(\w)*'
