@@ -2,7 +2,7 @@ __FILE__
 __LINE__
 say_hello
 #comment test
-$
+$->
 <$>
 -?
 ??
@@ -17,9 +17,38 @@ _\_
 {+}
 false
 ~@
-'THEN','WHEN','CASE','ELSE','FOR','NIL','RETRY','WHILE','ALIAS',
+->
+'~:
+>:
+?@
+{#}
+nil
+retry
+[?]
+alias
+<@>
+?@?
+not
+<-
+undef
+Class_Name
+{>}
+0b11001100101010
+-19.07
+'hola'
+[1,'a']
+{hola: 1, adios: 2}
+:bla 
+1..4 
++
+|
+,
+=
+:
+?
+!
+(
+)
+'OPEN_KEY',
 
-'CLASS','ELSIF','NOT','RETURN','UNDEF','CONSTANT','YIELD','FIXNUM',
-'FLOAT','STRING','ARRAY','HASH','SYMBOL', 'RANGE', 'OPERATOR','PIPE','COMMA',
-'EQUAL','COLON','QU_MARK','EXCL_MARK','OPEN_PARENTH','CLOSE_PARENTH','OPEN_KEY',
 'CLOSE_KEY','SEMICOLON','PERIOD'
