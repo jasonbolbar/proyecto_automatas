@@ -6,8 +6,8 @@ import getopt
 ############################ PALABRAS RESERVADAS ###########################
 
 RESERVED = {
-'__FILE__','__FILE__',
-'__LINE__','__LINE__'
+'__FILE__':'__FILE__',
+'__LINE__':'__LINE__',
 'and':'AND',
 'or':'OR',
 'in':'IN',
@@ -17,7 +17,7 @@ RESERVED = {
 'nil':'NIL',
 'retry':'RETRY',
 'true':'TRUE',
-'alias','ALIAS',
+'alias':'ALIAS',
 'not':'NOT',
 'undef':'UNDEF'
 }
@@ -31,7 +31,7 @@ tokens = ('__FILE__','__LINE__','IDENTIFIER','COMMENT','DEF','END','UNLESS',
 	'CLASS','ELSIF','NOT','RETURN','UNDEF','CONSTANT','YIELD','FIXNUM',
 	'FLOAT','STRING','ARRAY','HASH','SYMBOL', 'RANGE', 'OPERATOR','PIPE','COMMA',
 	'EQUAL','COLON','QU_MARK','EXCL_MARK','OPEN_PARENTH','CLOSE_PARENTH','OPEN_KEY',
-	'CLOSE_KEY','SEMICOLON','PERIOD','SPACE'
+	'CLOSE_KEY','SEMICOLON','PERIOD','SPACE','MODULE','RESCUE','TRUE'
 	)
 
 
@@ -57,7 +57,7 @@ t_THEN = r'\\->'
 t_WHEN = r'~:'
 t_CASE = r'\\>\\:'
 t_ELSE = r'\\\?@'
-t_FOR = r'\\{#\\}'
+t_FOR = r'\\{\#\\}'
 t_TRUE = r'TRUE'
 t_WHILE = r'\\[\\\?\\]'
 t_CLASS = r'<@>'
@@ -68,7 +68,7 @@ t_YIELD = r'\\{>\\}'
 
 def t_IDENTIFIER(t):
     r'([a-z]|\_)(\w)+'
-    t.type = RESERVED.get(t.value, "NAME")
+    t.type = RESERVED.get(t.value, "IDENTIFIER")
     return t
 
 #### LITERALES ####
@@ -78,7 +78,7 @@ t_STRING = r'\"([^\\"](\\")?(\\)?)*\"|\'([^\'](\\\\)?(\')?)*\''
 t_ARRAY = r'\[(\s)*((.)(\s)*(\,[^,]+)*)?\]|\%w(\(.*\)|\"([^\\"](\\")?(\\)?)*\"|\'([^\'](\\\\)?(\')?)*\')'
 t_HASH = r'{((\s)*("[^"]+"|\'[^\']+\|[^\']\'|:\w+(\s)*=>|\w+:)(\s)*[^,]+,?)*}'
 t_SYMBOL = r'\:([A-Z](\w)+|([a-z]|\_)(\w)+)'
-t_RANGE = r'((-?\d+.?\d+)|('[^']+')|("[^"]+"))(..|...)((-?\d+.?\d+)|('[^']+')|("[^"]+"))'
+t_RANGE = r'((-?\d+.?\d+)|(\'[^\']+\')|("[^"]+"))(..|...)((-?\d+.?\d+)|(\'[^\']+\')|("[^"]+"))'
 
 #### OPERADORES ####
 
@@ -95,14 +95,20 @@ t_OPEN_KEY = r'\('
 t_CLOSE_KEY = r'\)'
 t_PERIOD = r'\.'
 t_SEMICOLON = r'\;'
-t_SPACE = r'\s'
+t_SPACE = r'[ ]+'
 
 #### IGNORADOS ####
 
-t_IGNORE = r'\t|\n'
+def t_newline(t):
+    r'\n+'
+    pass
+
+def t_tab(t):
+    r'\t+'
+    pass    
 
 def t_error(t):
-    print 'Error in line {}, column {}, with {}'.format(t.lineno,t.lexpos,t.value)
+    print t
     t.lexer.skip(1)
 
 
@@ -120,7 +126,7 @@ def main(argv):
 			sys.exit()
 		elif opt in ('-i','--ifile'):
 			inputfile = arg
-	lexer.input(open(inputfile).read)
+	lexer.input(open(inputfile).read())
 	while True:
 	    tok = lexer.token()
 	    if not tok: 
