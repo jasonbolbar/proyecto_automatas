@@ -31,7 +31,7 @@ tokens = ('__FILE__','__LINE__','IDENTIFIER','COMMENT','DEF','END','UNLESS',
 	'CLASS','ELSIF','NOT','RETURN','UNDEF','CONSTANT','YIELD','FIXNUM',
 	'FLOAT','STRING','ARRAY','HASH','SYMBOL', 'RANGE', 'OPERATOR','PIPE','COMMA',
 	'EQUAL','COLON','QU_MARK','EXCL_MARK','OPEN_PARENTH','CLOSE_PARENTH','OPEN_KEY',
-	'CLOSE_KEY','SEMICOLON','PERIOD','SPACE','MODULE','RESCUE','TRUE'
+	'CLOSE_KEY','SEMICOLON','PERIOD','SPACE','MODULE','RESCUE','TRUE','GT','LT'
 	)
 
 
@@ -63,11 +63,11 @@ t_WHILE = r'\\[\\\?\\]'
 t_CLASS = r'<@>'
 t_ELSIF = r'\\\?@\\\?'
 t_RETURN = r'<\\-'
-t_CONSTANT = r'[A-Z](\w)+'
+t_CONSTANT = r'[A-Z](\w)*'
 t_YIELD = r'\\{>\\}'
 
 def t_IDENTIFIER(t):
-    r'([a-z]|\_)(\w)+'
+    r'([a-z]|\_)(\w)*'
     t.type = RESERVED.get(t.value, "IDENTIFIER")
     return t
 
@@ -77,7 +77,7 @@ t_FLOAT = r'\-?[1-9]+\.[0-9]+(e\-?[0-9]+)?'
 t_STRING = r'\"([^\\"](\\")?(\\)?)*\"|\'([^\'](\\\\)?(\')?)*\''
 t_ARRAY = r'\[(\s)*((.)(\s)*(\,[^,]+)*)?\]|\%w(\(.*\)|\"([^\\"](\\")?(\\)?)*\"|\'([^\'](\\\\)?(\')?)*\')'
 t_HASH = r'{((\s)*("[^"]+"|\'[^\']+\|[^\']\'|:\w+(\s)*=>|\w+:)(\s)*[^,]+,?)*}'
-t_SYMBOL = r'\:([A-Z](\w)+|([a-z]|\_)(\w)+)'
+t_SYMBOL = r'\:([A-Z](\w)+|([a-z]|\_)(\w)*)'
 t_RANGE = r'((-?\d+.?\d+)|(\'[^\']+\')|("[^"]+"))(..|...)((-?\d+.?\d+)|(\'[^\']+\')|("[^"]+"))'
 
 #### OPERADORES ####
@@ -96,6 +96,8 @@ t_CLOSE_KEY = r'\)'
 t_PERIOD = r'\.'
 t_SEMICOLON = r'\;'
 t_SPACE = r'[ ]+'
+t_GT = r'<'
+t_LT = r'>'
 
 #### IGNORADOS ####
 
