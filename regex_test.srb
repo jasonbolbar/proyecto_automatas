@@ -49,6 +49,7 @@ Class_Name
 !
 (
 )
-'OPEN_KEY',
-
-'CLOSE_KEY','SEMICOLON','PERIOD'
+{
+}
+;
+.
