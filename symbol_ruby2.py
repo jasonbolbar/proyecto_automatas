@@ -55,10 +55,10 @@ t_DO = r'{\+}'
 t_FALSE = r'FALSE'
 t_NEXT = r'~@'
 t_RESCUE = r'%\^'
-t_THEN = r'\->'
+t_THEN = r'\->' #MAL
 t_WHEN = r'~:'
 t_CASE = r'>:'
-t_ELSE = r'\?@' #MAL
+t_ELSE = r'\?@' 
 t_FOR = r'{\#}'
 t_TRUE = r'TRUE'
 t_WHILE = r'\[\?\]'
@@ -75,8 +75,8 @@ def t_IDENTIFIER(t):
     return t
 
 #### LITERALES ####
-t_FIXNUM = r'\-?((0((x|X)([0-9]|[a-f]|[A-F])+|(b|B)([0-1])+|([0-7]+)))|([1-9]+(\_?[0-9])*))'
-t_FLOAT = r'\-?[1-9]+\.[0-9]+(e\-?[0-9]+)?'
+t_FLOAT = r'([-+]?[0-9]+\.[0-9]+)'
+t_FIXNUM = r'[-+]?((0((x|X)([0-9]|[a-f]|[A-F])+|(b|B)([0-1])+|([0-7]+))))|([1-9]+(\_?[0-9])*)'
 t_STRING = r'\"([^\\"](\\")?(\\)?)*\"|\'([^\'](\\\\)?(\')?)*\''
 t_SYMBOL = r'\:([A-Z](\w)+|([a-z]|\_)(\w)*)'
 
