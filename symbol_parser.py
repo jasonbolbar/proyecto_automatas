@@ -6,6 +6,7 @@ tokens = symbol_lexer.tokens
 
 def p_symbol_ruby(p):
 	'''symbol_ruby : variable
+				   | value
 	'''
 	p[0] = symbol_coder.c_concatenate(p)
 	
@@ -31,7 +32,19 @@ def p_global_variable(p):
 	'''global_variable : DOLLAR IDENTIFIER
 	                     | DOLLAR CONSTANT 
 	                     | SPECIAL_VAR'''
-	p[0] = symbol_coder.c_concatenate(p)                    
+	p[0] = symbol_coder.c_concatenate(p) 
+
+def p_value(p):
+	'''
+	value : FLOAT 
+		  | STRING 
+		  | FIXNUM 
+		  | SYMBOL 
+		  | NIL 
+		  | TRUE 
+		  | FALSE
+	'''
+	p[0] = p[1]
 	
 
 
