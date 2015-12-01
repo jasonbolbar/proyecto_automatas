@@ -31,7 +31,7 @@ tokens = ('__FILE__','__LINE__','IDENTIFIER','COMMENT','DEF','END','UNLESS',
 	'FLOAT','STRING','HASH','SYMBOL', 'RANGE', 'OPERATOR','PIPE','COMMA',
 	'EQUAL','COLON','QU_MARK','EXCL_MARK','OPEN_PARENTH','CLOSE_PARENTH','OPEN_BRACE',
 	'CLOSE_BRACE','SEMICOLON','PERIOD','SPACE','MODULE','RESCUE','TRUE','GT','LT','SPECIAL_VAR',
-	'__DIR__','DOLLAR','AT','UNTIL','OPEN_SQT','CLOSE_SQT'
+	'__DIR__','DOLLAR','AT','UNTIL','OPEN_SQT','CLOSE_SQT','SPECIAL_NUM'
 	)
 
 
@@ -73,10 +73,12 @@ def t_IDENTIFIER(t):
     return t
 
 #### LITERALES ####
-t_FLOAT = r'([-+]?[0-9]+\.[0-9]+)'
-t_FIXNUM = r'[-+]?((0((x|X)([0-9]|[a-f]|[A-F])+|(b|B)([0-1])+|([0-7]+))))|([1-9]+(\_?[0-9])*)'
+
+t_FLOAT = r'^[-+]?[0-9]*\.[0-9]+([eE][-+]?[0-9]+)?$'
+t_FIXNUM = r'^[-+]?[1-9]+(\_[0-9]+)*'
 t_STRING = r'\"([^\\"](\\")?(\\)?)*\"|\'([^\'](\\\\)?(\')?)*\''
 t_SYMBOL = r'\:([A-Z](\w)+|([a-z]|\_)(\w)*)'
+t_SPECIAL_NUM = r'^[-+]?0((x|X)([0-9]|[a-f]|[A-F])+|(b|B)([0-1])+|([0-7]+))'
 
 #### OPERADORES ####
 
