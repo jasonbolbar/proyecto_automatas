@@ -6,3 +6,7 @@ def c_concatenate_by_index(p, begin, end):
 
 def c_method(p):
 	return 'def' + c_concatenate_by_index(p,2,7) + '\nend'	
+
+
+
+################################################ JASON IS WORKING HERE ############################################
