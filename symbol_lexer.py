@@ -30,7 +30,7 @@ tokens = ('__FILE__','__LINE__','IDENTIFIER','COMMENT','DEF','END','UNLESS',
 	'CLASS','ELSIF','NOT','RETURN','UNDEF','CONSTANT','YIELD','FIXNUM',
 	'FLOAT','STRING','HASH','SYMBOL', 'RANGE', 'OPERATOR','PIPE','COMMA',
 	'EQUAL','COLON','QU_MARK','EXCL_MARK','OPEN_PARENTH','CLOSE_PARENTH','OPEN_BRACE',
-	'CLOSE_BRACE','SEMICOLON','PERIOD','SPACE','MODULE','RESCUE','TRUE','GT','LT','SPECIAL_VAR',
+	'CLOSE_BRACE','SEMICOLON','PERIOD','MODULE','RESCUE','TRUE','GT','LT','SPECIAL_VAR',
 	'__DIR__','DOLLAR','AT','UNTIL','OPEN_SQT','CLOSE_SQT','SPECIAL_NUM', 'SELF'
 	)
 
@@ -97,7 +97,6 @@ t_OPEN_SQT = r'\['
 t_CLOSE_SQT = r'\]'
 t_PERIOD = r'\.'
 t_SEMICOLON = r'\;'
-t_SPACE = r'[ ]+'
 t_GT = r'<'
 t_LT = r'>'
 t_DOLLAR = r'\$'
@@ -114,6 +113,11 @@ def t_newline(t):
 def t_tab(t):
     r'\t+'
     pass    
+
+def t_whitespace(t):
+    r'[ ]+'
+    pass
+
 
 def t_error(t):
     print t
