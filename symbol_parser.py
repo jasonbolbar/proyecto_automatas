@@ -8,7 +8,9 @@ def p_symbol_ruby(p):
 	'''symbol_ruby : variable
 				   | value
 				   | method
+				   | range 
 	'''
+	# La produccion range se debe usar donde se ocupa
 	p[0] = symbol_coder.c_concatenate(p)
 	
 
@@ -44,6 +46,10 @@ def p_value(p):
 		  | NIL 
 		  | TRUE 
 		  | FALSE
+		  | SPECIAL_NUM 
+		  | array
+		  | hash
+		  | SELF
 	'''
 	p[0] = symbol_coder.c_concatenate(p)
 	
@@ -90,7 +96,8 @@ def p_ins_single(p):
 
 
 def p_inst(p):
-	'ins : ins'
+	'''ins : ins
+		   | '''
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_assig(p):
@@ -157,6 +164,52 @@ def p_parameter_end(p):
 def p_parameter_def(p):
 	'parameter : value COMMA parameter'
 	p[0] = symbol_coder.c_concatenate(p)
+
+
+
+
+
+
+################################################ JASON IS WORKING HERE ############################################
+def p_array(p):
+	'array : OPEN_SQT array_content CLOSE_SQT'
+	p[0] = symbol_coder.c_concatenate(p)
+
+def p_array_content(p):
+	'''array_content : variable COMMA array_content
+					 | value COMMA array_content
+					 | variable
+					 | value
+					 |
+					 '''
+	p[0] = symbol_coder.c_concatenate(p)	
+
+def p_hash(p):
+	'hash : OPEN_BRACE hash_content CLOSE_BRACE'
+	p[0] = symbol_coder.c_concatenate(p)
+
+def p_hash_content(p):
+	'''hash_content : hash_key EQUAL LT hash_value
+					 | IDENTIFIER COLON hash_value
+					 |
+					 '''
+	p[0] = symbol_coder.c_concatenate(p)
+
+def p_hash_key(p):
+	'''hash_key : value'''
+	p[0] = p[1]
+
+def p_hash_value(p):
+	'''hash_value : value 
+				| variable'''
+	p[0] = p[1]	
+
+def p_range(p):
+	'''range : value PERIOD PERIOD value
+	'''
+	p[0] = symbol_coder.c_concatenate(p)
+
+
 
 
 
