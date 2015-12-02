@@ -66,11 +66,11 @@ def p_method_s(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_method_pa_assig_cont(p):
-	'method_p : IDENTIFIER EQUAL value COMMA method_p'
+	'method_p : IDENTIFIER EQUAL assign_value COMMA method_p'
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_method_pa_assig_end(p):
-	'method_p : IDENTIFIER EQUAL value'
+	'method_p : IDENTIFIER EQUAL assign_value'
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_method_pa_single_cont(p):
@@ -83,7 +83,7 @@ def p_method_pa_single_end(p):
 				'''
 	p[0] = symbol_coder.c_concatenate(p)
 
-def p_new_cmd(p):
+def p_new_cmd_single(p):
 	'new_cmd : ins'
 	p[0] = symbol_coder.c_concatenate(p)
 
@@ -94,22 +94,18 @@ def p_ins_single(p):
 		  '''
 	p[0] = symbol_coder.c_concatenate(p)
 
-
-
-
 def p_assig(p):
-	'''assig : variable EQUAL cmd
-	    | variable EQUAL value'''
+	'assig : variable EQUAL cmd'
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_cmd_single(p):
 	'''cmd : method_call
-		  | variable'''
+		  | assign_value'''
 	p[0] = symbol_coder.c_concatenate(p)
 
 
 def p_cmd(p):
-	'cmd : variable PERIOD cmd'
+	'cmd : assign_value PERIOD cmd'
 	p[0] = symbol_coder.c_concatenate(p)	
 
 def p_method_main(p):
@@ -154,12 +150,14 @@ def p_block_def_simple(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_parameter_end(p):
-	'parameter : value'
+	'''parameter : assign_value
+				 |
+				 '''
 	p[0] = symbol_coder.c_concatenate(p)
 
 
 def p_parameter_def(p):
-	'parameter : value COMMA parameter'
+	'parameter : assign_value COMMA parameter'
 	p[0] = symbol_coder.c_concatenate(p)
 
 
@@ -173,10 +171,8 @@ def p_array(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_array_content(p):
-	'''array_content : variable COMMA array_content
-					 | value COMMA array_content
-					 | variable
-					 | value
+	'''array_content : assign_value COMMA array_content
+					 | assign_value
 					 |
 					 '''
 	p[0] = symbol_coder.c_concatenate(p)	
@@ -186,8 +182,8 @@ def p_hash(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_hash_content(p):
-	'''hash_content : hash_key EQUAL LT hash_value
-					 | IDENTIFIER COLON hash_value
+	'''hash_content : hash_key EQUAL LT assign_value
+					 | IDENTIFIER COLON assign_value
 					 |
 					 '''
 	p[0] = symbol_coder.c_concatenate(p)
@@ -196,9 +192,9 @@ def p_hash_key(p):
 	'''hash_key : value'''
 	p[0] = p[1]
 
-def p_hash_value(p):
-	'''hash_value : value 
-				| variable'''
+def p_assign_value(p):
+	'''assign_value : value 
+				    | variable'''
 	p[0] = p[1]	
 
 def p_range(p):
