@@ -52,9 +52,16 @@ def p_value(p):
 		  | SELF
 	'''
 	p[0] = symbol_coder.c_concatenate(p)
-	
+
+def p_space(p):
+	'''
+	space : SPACE
+		  |
+	      '''
+	p[0] = symbol_coder.c_concatenate(p)      
+
 def p_method(p):
-	'method : DEF SPACE IDENTIFIER method_s OPEN_PARENTH method_p CLOSE_PARENTH END'
+	'method : DEF SPACE IDENTIFIER method_s OPEN_PARENTH space method_p space CLOSE_PARENTH new_cmd END'
 	p[0] = symbol_coder.c_method(p)
 
 def p_method_s(p):
@@ -65,32 +72,31 @@ def p_method_s(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_method_pa_assig_cont(p):
-	'method_p : IDENTIFIER EQUAL value COMMA method_p'
+	'method_p : IDENTIFIER space EQUAL space value COMMA space method_p'
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_method_pa_assig_end(p):
-	'method_p : IDENTIFIER EQUAL value'
+	'method_p : IDENTIFIER space EQUAL space value'
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_method_pa_single_cont(p):
-	'method_p : IDENTIFIER COMMA method_p'
+	'method_p : IDENTIFIER COMMA space method_p'
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_method_pa_single_end(p):
-	'''method_p : IDENTIFIER
+	'''method_p : IDENTIFIER space
 				|
 				'''
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_new_cmd(p):
-	'''new_cmd : ins
-			   |
-			   '''
+	'new_cmd : ins'
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_ins_single(p):
 	'''ins : assig
 		   | cmd
+		   |
 		   '''
 	p[0] = symbol_coder.c_concatenate(p)
 
@@ -101,8 +107,8 @@ def p_inst(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_assig(p):
-	'''assig : variable EQUAL cmd
-	       | variable EQUAL value'''
+	'''assig : variable space EQUAL space cmd
+	       | variable space EQUAL space value'''
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_cmd_single(p):
@@ -127,33 +133,33 @@ def p_method_main_2(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_method_cl(p):
-	'method_cl : IDENTIFIER value'
+	'method_cl : IDENTIFIER SPACE value'
 	p[0] = symbol_coder.c_concatenate(p)
 
 
 def p_method_cl_params(p):
-	'''method_cl : IDENTIFIER OPEN_PARENTH parameter CLOSE_PARENTH
-	             | IDENTIFIER OPEN_PARENTH hash_pr CLOSE_PARENTH'''
+	'''method_cl : IDENTIFIER OPEN_PARENTH space parameter space CLOSE_PARENTH
+	             | IDENTIFIER OPEN_PARENTH space hash_pr space CLOSE_PARENTH'''
 	p[0] = symbol_coder.c_concatenate(p)
 
 
 def p_hash_parameter(p):
-	'hash_pr : IDENTIFIER COLON value COMMA hash_pr'
+	'hash_pr : IDENTIFIER COLON space value COMMA space hash_pr'
 	p[0] = symbol_coder.c_concatenate(p)
 
 
 def p_has_parameter_end(p):
-	'hash_pr : IDENTIFIER COLON value'
+	'hash_pr : IDENTIFIER COLON space value'
 	p[0] = symbol_coder.c_concatenate(p)
 
 
 def p_block_def(p):
-	'block_def : DO PIPE parameter PIPE new_cmd'
+	'block_def : SPACE DO space PIPE parameter PIPE space new_cmd'
 	p[0] = symbol_coder.c_concatenate(p)
 
 
 def p_block_def_simple(p):
-	'block_def : OPEN_BRACE PIPE parameter PIPE ins CLOSE_BRACE'
+	'block_def : OPEN_BRACE space PIPE parameter PIPE space ins CLOSE_BRACE'
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_parameter_end(p):
@@ -162,7 +168,7 @@ def p_parameter_end(p):
 
 
 def p_parameter_def(p):
-	'parameter : value COMMA parameter'
+	'parameter : value COMMA space parameter'
 	p[0] = symbol_coder.c_concatenate(p)
 
 
