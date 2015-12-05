@@ -5,8 +5,11 @@ import ply.yacc as yacc
 tokens = symbol_lexer.tokens
 
 def p_symbol_ruby(p):
+
 	'''symbol_ruby : method symbol_ruby
 				   | new_cmd symbol_ruby
+				   | class
+				   | module
 				   | 
 	'''
 	p[0] = symbol_coder.c_concatenate(p)
@@ -158,6 +161,7 @@ def p_parameter_def(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 
+
 def p_method_call_name(p):
 	''' method_call_name : IDENTIFIER 
 						 | SUPER 
@@ -166,6 +170,22 @@ def p_method_call_name(p):
 	                     | ALIAS 
 	                     '''
 	p[0] = symbol_coder.c_replace_method_name(p)
+
+def p_class(p):
+	'class : CLASS CONSTANT inheritance symbol_ruby END'
+	p[0] = symbol_coder.c_class(p)
+
+def p_inheritance(p):
+	'''inheritance : INHERITANCE CONSTANT
+				   |
+				   '''	
+	p[0] = symbol_coder.c_inheritance(p)	
+
+def p_module_def(p):
+	'module : MODULE CONSTANT symbol_ruby END'
+	p[0] = symbol_coder.c_module(p)		   
+
+
 
 
 ################################################ JASON IS WORKING HERE ############################################
