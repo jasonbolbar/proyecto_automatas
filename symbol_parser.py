@@ -108,7 +108,7 @@ def p_cmd(p):
 	p[0] = symbol_coder.c_concatenate(p)		
 
 def p_method_main(p):
-	'''method_call : method_cl PERIOD method_cl 
+	'''method_call : method_cl PERIOD method_call 
 	               | method_cl
 	               '''
 	p[0] = symbol_coder.c_concatenate(p)
@@ -175,10 +175,6 @@ def p_assign_value(p):
 				    | variable'''
 	p[0] = p[1]	
 
-def p_range(p):
-	'''range : value PERIOD PERIOD value
-	'''
-	p[0] = symbol_coder.c_concatenate(p)
 
 
 
