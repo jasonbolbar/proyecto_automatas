@@ -91,7 +91,7 @@ def p_multiple_cmd(p):
 def p_new_cmd_single(p):
 	'''new_cmd : ins 
 	           | assig'''
-	p[0] = symbol_coder.c_concatenate(p)
+	p[0] = symbol_coder.c_instructions(p)
 
 def p_assig(p):
 	'assig : variable EQUAL ins'
@@ -114,7 +114,6 @@ def p_method_main(p):
 	               | method_cl
 	               '''
 	p[0] = symbol_coder.c_concatenate(p)
-
 
 def p_method_cl_params(p):
 	'''method_cl : IDENTIFIER OPEN_PARENTH parameter CLOSE_PARENTH
