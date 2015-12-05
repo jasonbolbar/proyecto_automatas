@@ -5,10 +5,10 @@ import ply.yacc as yacc
 tokens = symbol_lexer.tokens
 
 def p_symbol_ruby(p):
-	'''symbol_ruby : method
-				  | mult_cmd
+	'''symbol_ruby : method symbol_ruby
+				   | new_cmd symbol_ruby
+				   | 
 	'''
-	# La produccion range se debe usar donde se ocupa
 	p[0] = symbol_coder.c_concatenate(p)
 	
 
@@ -55,6 +55,19 @@ def p_value(p):
 def p_method(p):
 	'method : DEF IDENTIFIER method_s OPEN_PARENTH method_p CLOSE_PARENTH mult_cmd END'
 	p[0] = symbol_coder.c_method(p)
+
+def p_block(p):
+	'''block : DO pipe_params mult_cmd END
+			 | OPEN_BRACE pipe_params mult_cmd CLOSE_BRACE
+			 | DO mult_cmd END
+			 | OPEN_BRACE mult_cmd CLOSE_BRACE
+	'''
+	p[0] = symbol_coder.c_block(p)
+
+def p_pipe_params(p):
+	'''pipe_params : PIPE parameter PIPE
+				   '''
+	p[0] = symbol_coder.c_concatenate(p)
 
 def p_method_s(p):
 	'''method_s : EXCL_MARK
@@ -114,8 +127,14 @@ def p_method_main(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_method_cl_params(p):
-	'''method_cl : IDENTIFIER OPEN_PARENTH parameter CLOSE_PARENTH
-	             | IDENTIFIER OPEN_PARENTH hash_pr CLOSE_PARENTH'''
+	'''method_cl : method_call_name OPEN_PARENTH method_call_parameters CLOSE_PARENTH'''
+	p[0] = symbol_coder.c_concatenate(p)
+
+def p_method_call_parameters(p):
+	'''
+	method_call_parameters : parameter 
+						   | hash_pr
+	'''
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_hash_parameter(p):
@@ -128,19 +147,25 @@ def p_has_parameter_end(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_parameter_end(p):
-	'''parameter : assign_value
+	'''parameter : ins
 				 |
 				 '''
 	p[0] = symbol_coder.c_concatenate(p)
 
 
 def p_parameter_def(p):
-	'parameter : assign_value COMMA parameter'
+	'parameter : ins COMMA parameter'
 	p[0] = symbol_coder.c_concatenate(p)
 
 
-
-
+def p_method_call_name(p):
+	''' method_call_name : IDENTIFIER 
+						 | SUPER 
+						 | YIELD 
+	                     | RETURN
+	                     | ALIAS 
+	                     '''
+	p[0] = symbol_coder.c_replace_method_name(p)
 
 
 ################################################ JASON IS WORKING HERE ############################################
@@ -172,7 +197,9 @@ def p_hash_key(p):
 
 def p_assign_value(p):
 	'''assign_value : value 
-				    | variable'''
+				    | variable
+				    | block
+				    '''
 	p[0] = p[1]	
 
 
