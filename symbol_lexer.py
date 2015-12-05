@@ -27,7 +27,7 @@ RESERVED = {
 tokens = ('__FILE__','__LINE__','IDENTIFIER','COMMENT','DEF','END','UNLESS',
 	'IF','AND','OR','IN','BEGIN','ENSURE','REDO','SUPER','BREAK','DO','FALSE',
 	'NEXT','THEN','WHEN','CASE','ELSE','FOR','NIL','RETRY','WHILE','ALIAS',
-	'CLASS','ELSIF','NOT','RETURN','UNDEF','CONSTANT','YIELD','FIXNUM',
+	'CLASS','INHERITANCE','ELSIF','NOT','RETURN','UNDEF','CONSTANT','YIELD','FIXNUM',
 	'FLOAT','STRING','HASH','SYMBOL', 'RANGE', 'OPERATOR','PIPE','COMMA',
 	'EQUAL','COLON','QU_MARK','EXCL_MARK','OPEN_PARENTH','CLOSE_PARENTH','OPEN_BRACE',
 	'CLOSE_BRACE','SEMICOLON','PERIOD','MODULE','RESCUE','TRUE','GT','LT','SPECIAL_VAR',
@@ -42,6 +42,7 @@ t_DEF = r'\$->'
 t_END = r'\<\$\>'
 t_IF = r'\?\?'
 t_UNLESS = r'\?-'
+t_ELSIF = r'\?@\?'
 t_AND = r'&&'
 t_OR = r'\|\|'
 t_BEGIN = r'\^%'
@@ -62,15 +63,19 @@ t_TRUE = r'TRUE'
 t_WHILE = r'\[\?\]'
 t_UNTIL = r'\]\?\['
 t_CLASS = r'<@>'
-t_ELSIF = r'\?@\?'
+t_INHERITANCE = r'<\+>'
 t_RETURN = r'<\-'
-t_CONSTANT = r'[A-Z](\w)*'
 t_YIELD = r'{>}'
 
 def t_IDENTIFIER(t):
     r'([a-z]|\_)(\w)*'
     t.type = RESERVED.get(t.value, "IDENTIFIER")
     return t
+
+def t_CONSTANT(t):
+    r'[A-Z](\w)*'
+    t.type = RESERVED.get(t.value, "CONSTANT")
+    return t    
 
 #### LITERALES ####
 
