@@ -55,7 +55,7 @@ def p_value(p):
   
 
 def p_method(p):
-	'method : DEF IDENTIFIER method_s OPEN_PARENTH method_p CLOSE_PARENTH new_cmd END'
+	'method : DEF IDENTIFIER method_s OPEN_PARENTH method_p CLOSE_PARENTH mult_cmd END'
 	p[0] = symbol_coder.c_method(p)
 
 def p_method_s(p):
@@ -83,52 +83,43 @@ def p_method_pa_single_end(p):
 				'''
 	p[0] = symbol_coder.c_concatenate(p)
 
-def p_new_cmd_single(p):
-	'new_cmd : ins'
-	p[0] = symbol_coder.c_concatenate(p)
+def p_multiple_cmd(p):
+	'''mult_cmd : new_cmd mult_cmd
+			   | new_cmd'''
+	p[0] = symbol_coder.c_concatenate(p)		   
 
-def p_ins_single(p):
-	'''ins : assig
-		  | cmd
-		  |
-		  '''
+def p_new_cmd_single(p):
+	'''new_cmd : ins 
+	           | assig'''
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_assig(p):
-	'assig : variable EQUAL cmd'
-	p[0] = symbol_coder.c_concatenate(p)
-
-def p_cmd_single(p):
-	'''cmd : method_call
-		  | assign_value'''
-	p[0] = symbol_coder.c_concatenate(p)
-
-
-def p_cmd(p):
-	'cmd : assign_value PERIOD cmd'
+	'assig : variable EQUAL ins'
 	p[0] = symbol_coder.c_concatenate(p)	
 
+def p_ins_single(p):
+	'''ins : method_call
+		   | cmd
+		  '''
+	p[0] = symbol_coder.c_concatenate(p)
+
+def p_cmd(p):
+	'''cmd : assign_value 
+	       | assign_value PERIOD method_call
+	       '''
+	p[0] = symbol_coder.c_concatenate(p)		
+
 def p_method_main(p):
-	'method_call : method_cl'
-	p[0] = symbol_coder.c_concatenate(p)
-
-
-def p_method_main_2(p):
-	'''method_call : IDENTIFIER block_def
-	        | method_cl block_def
-	        '''
-	p[0] = symbol_coder.c_concatenate(p)
-
-def p_method_cl(p):
-	'method_cl : IDENTIFIER value'
+	'''method_call : method_cl PERIOD method_cl 
+	               | method_cl
+	               '''
 	p[0] = symbol_coder.c_concatenate(p)
 
 
 def p_method_cl_params(p):
 	'''method_cl : IDENTIFIER OPEN_PARENTH parameter CLOSE_PARENTH
-	       | IDENTIFIER OPEN_PARENTH hash_pr CLOSE_PARENTH'''
+	             | IDENTIFIER OPEN_PARENTH hash_pr CLOSE_PARENTH'''
 	p[0] = symbol_coder.c_concatenate(p)
-
 
 def p_hash_parameter(p):
 	'hash_pr : IDENTIFIER COLON value COMMA hash_pr'
@@ -137,16 +128,6 @@ def p_hash_parameter(p):
 
 def p_has_parameter_end(p):
 	'hash_pr : IDENTIFIER COLON value'
-	p[0] = symbol_coder.c_concatenate(p)
-
-
-def p_block_def(p):
-	'block_def : DO PIPE parameter PIPE new_cmd'
-	p[0] = symbol_coder.c_concatenate(p)
-
-
-def p_block_def_simple(p):
-	'block_def : OPEN_BRACE PIPE parameter PIPE ins CLOSE_BRACE'
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_parameter_end(p):
