@@ -6,7 +6,9 @@ tokens = symbol_lexer.tokens
 
 def p_symbol_ruby(p):
 	'''symbol_ruby : method
-				  | mult_cmd
+				   | mult_cmd
+				   | class
+				   | module
 	'''
 	# La produccion range se debe usar donde se ocupa
 	p[0] = symbol_coder.c_concatenate(p)
@@ -139,7 +141,19 @@ def p_parameter_def(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 
+def p_class(p):
+	'class : CLASS CONSTANT inheritance symbol_ruby END'
+	p[0] = symbol_coder.c_class(p)
 
+def p_inheritance(p):
+	'''inheritance : INHERITANCE CONSTANT
+				   |
+				   '''	
+	p[0] = symbol_coder.c_inheritance(p)	
+
+def p_module_def(p):
+	'module : MODULE CONSTANT symbol_ruby END'
+	p[0] = symbol_coder.c_module(p)		   
 
 
 
