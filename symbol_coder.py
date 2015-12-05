@@ -5,8 +5,10 @@ def c_concatenate_by_index(p, begin, end):
 	return "".join([p[i] for i in range(begin,end+1)])
 
 def c_method(p):
-	return 'def ' + c_concatenate_by_index(p,2,6) + '\n  ' + p[7] + '\nend'	
+	return 'def ' + c_concatenate_by_index(p,2,6) + '\n' + p[7] + 'end'	
 
+def c_instructions(p):
+	return '  ' + p[1] + '\n'
 
 
 ################################################ JASON IS WORKING HERE ############################################
