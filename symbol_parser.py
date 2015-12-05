@@ -5,10 +5,8 @@ import ply.yacc as yacc
 tokens = symbol_lexer.tokens
 
 def p_symbol_ruby(p):
-	'''symbol_ruby : variable
-				  | value
-				  | method
-				  | range 
+	'''symbol_ruby : method
+				  | mult_cmd
 	'''
 	# La produccion range se debe usar donde se ocupa
 	p[0] = symbol_coder.c_concatenate(p)
