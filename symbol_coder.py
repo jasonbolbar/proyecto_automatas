@@ -15,7 +15,10 @@ def c_class(p):
 	return 'class ' + p[2] + p[3] + '\n' + p[4] + 'end\n'
 
 def c_inheritance(p):
-	return ' ' + p[1] + ' ' + p[2]	
+	if len(p) == 1:
+		return ''
+	else:
+		return ' ' + '<' + ' ' + p[2]	
 
 def c_module(p):
 	return 'module ' + p[2]	+ '\n' + p[3] + 'end\n'
@@ -30,13 +33,16 @@ def c_replace_method_name(p):
 	return p[1]
 
 def c_block(p):
-	if p[1] == '{+}':
-		if len(p) == 4:
-			return 'do ' + '\n' + p[2] + 'end'	
-		else :
-			return 'do ' + p[2] + '\n' + p[3] + 'end'	
+	if len(p) == 1:
+		return ''
 	else:
-		return c_concatenate(p)
+		if p[1] == '{+}':
+			if len(p) == 4:
+				return 'do ' + '\n' + p[2] + 'end'	
+			else :
+				return 'do ' + p[2] + '\n' + p[3] + 'end'	
+		else:
+			return c_concatenate(p)
 
 
 ################################################ JASON IS WORKING HERE ############################################

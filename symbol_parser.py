@@ -59,13 +59,6 @@ def p_method(p):
 	'method : DEF IDENTIFIER method_s OPEN_PARENTH method_p CLOSE_PARENTH mult_cmd END'
 	p[0] = symbol_coder.c_method(p)
 
-def p_block(p):
-	'''block : DO pipe_params mult_cmd END
-			 | OPEN_BRACE pipe_params mult_cmd CLOSE_BRACE
-			 | DO mult_cmd END
-			 | OPEN_BRACE mult_cmd CLOSE_BRACE
-	'''
-	p[0] = symbol_coder.c_block(p)
 
 def p_pipe_params(p):
 	'''pipe_params : PIPE parameter PIPE
@@ -108,8 +101,13 @@ def p_new_cmd_single(p):
 	p[0] = symbol_coder.c_instructions(p)
 
 def p_assig(p):
-	'assig : variable EQUAL ins'
+	'assig : variable assig_operator ins'
 	p[0] = symbol_coder.c_concatenate(p)	
+
+def p_assig_operator(p):
+	'''assig_operator : OPERATOR EQUAL
+	                | EQUAL '''
+	p[0] = symbol_coder.c_concatenate(p)
 
 def p_ins_single(p):
 	'''ins : method_call
@@ -118,7 +116,8 @@ def p_ins_single(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_cmd(p):
-	'''cmd : assign_value 
+	'''cmd : assign_value
+		   | arithmetical_operation 
 	       | assign_value PERIOD method_call
 	       '''
 	p[0] = symbol_coder.c_concatenate(p)		
@@ -130,8 +129,17 @@ def p_method_main(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_method_cl_params(p):
-	'''method_cl : method_call_name OPEN_PARENTH method_call_parameters CLOSE_PARENTH'''
+	'method_cl : method_call_name OPEN_PARENTH method_call_parameters CLOSE_PARENTH block'
 	p[0] = symbol_coder.c_concatenate(p)
+
+def p_block(p):
+	'''block : DO pipe_params mult_cmd END
+			 | OPEN_BRACE pipe_params mult_cmd CLOSE_BRACE
+			 | DO mult_cmd END
+			 | OPEN_BRACE mult_cmd CLOSE_BRACE
+			 | 
+	'''
+	p[0] = symbol_coder.c_block(p)	
 
 def p_method_call_parameters(p):
 	'''
@@ -172,23 +180,25 @@ def p_method_call_name(p):
 	p[0] = symbol_coder.c_replace_method_name(p)
 
 def p_class(p):
-	'class : CLASS CONSTANT inheritance symbol_ruby END'
+	'class : CLASS namespaced_name inheritance symbol_ruby END'
 	p[0] = symbol_coder.c_class(p)
 
 def p_inheritance(p):
-	'''inheritance : INHERITANCE CONSTANT
+	'''inheritance : INHERITANCE namespaced_name
 				   |
 				   '''	
 	p[0] = symbol_coder.c_inheritance(p)	
 
 def p_module_def(p):
-	'module : MODULE CONSTANT symbol_ruby END'
+	'module : MODULE namespaced_name symbol_ruby END'
 	p[0] = symbol_coder.c_module(p)		   
 
+def p_namespaced_name(p):
+	'''namespaced_name : CONSTANT COLON COLON namespaced_name 
+					   | CONSTANT
+	'''
+	p[0] = symbol_coder.c_concatenate(p)
 
-
-
-################################################ JASON IS WORKING HERE ############################################
 def p_array(p):
 	'array : OPEN_SQT array_content CLOSE_SQT'
 	p[0] = symbol_coder.c_concatenate(p)
@@ -218,9 +228,16 @@ def p_hash_key(p):
 def p_assign_value(p):
 	'''assign_value : value 
 				    | variable
-				    | block
 				    '''
 	p[0] = p[1]	
+
+def p_arithmetical_operation(p):
+	'''
+	arithmetical_operation : value OPERATOR arithmetical_operation
+						   | OPEN_PARENTH arithmetical_operation CLOSE_PARENTH
+						   | value OPERATOR value
+	'''
+	p[0] = symbol_coder.c_concatenate(p)
 
 
 
