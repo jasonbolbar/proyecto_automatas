@@ -93,18 +93,24 @@ def p_new_cmd_single(p):
 	           | assig'''
 	p[0] = symbol_coder.c_instructions(p)
 
-def p_assig(p):
-	'assig : variable EQUAL ins'
-	p[0] = symbol_coder.c_concatenate(p)	
-
 def p_ins_single(p):
-	'''ins : method_call
-		   | cmd
+	'''ins : cmd
+		   | cond_ins
 		  '''
 	p[0] = symbol_coder.c_concatenate(p)
 
+def p_assig(p):
+	'assig : variable assig_operator ins'
+	p[0] = symbol_coder.c_concatenate(p)	
+
+def p_assig_operator(p):
+	'''assig_operator : OPERATOR EQUAL
+	                | EQUAL '''
+	p[0] = symbol_coder.c_concatenate(p)		
+
 def p_cmd(p):
-	'''cmd : assign_value 
+	'''cmd : method_call
+		   | assign_value 
 	       | assign_value PERIOD method_call
 	       '''
 	p[0] = symbol_coder.c_concatenate(p)		
@@ -133,12 +139,91 @@ def p_parameter_end(p):
 	'''parameter : assign_value
 				 |
 				 '''
-	p[0] = symbol_coder.c_concatenate(p)
-
+	p[0] = symbol_coder.c_concatenate(p)		
 
 def p_parameter_def(p):
 	'parameter : assign_value COMMA parameter'
 	p[0] = symbol_coder.c_concatenate(p)
+
+
+def p_cond_ins(p):
+	'''cond_ins : if
+				| unless
+				| while
+				| case
+				'''	
+	p[0] = symbol_coder.c_concatenate(p)		
+
+def p_if_else_simple(p):
+	'if : condition QU_MARK cmd COLON cmd'
+	p[0] = symbol_coder.c_concatenate(p)
+
+def p_if_complex(p):
+	'if : IF mult_conds mult_cmd else_cond'
+	p[0] = symbol_coder.c_if(p)
+
+def p_unless_complex(p):
+	'unless : UNLESS mult_conds mult_cmd else_cond'
+	p[0] = symbol_coder.c_unless(p)
+
+def p_else_conditional(p):
+	'''else_cond : else
+			   	 | END
+			     '''	
+	p[0] = symbol_coder.c_else_end(p)		     
+
+def p_while_complex(p):
+	'while : WHILE mult_conds mult_cmd END'
+	p[0] = symbol_coder.c_while(p)
+
+def p_case(p):
+	'case : CASE condition case_when'
+	p[0] = symbol_coder.c_case(p)
+
+def p_case_when_cont(p):
+	'case_when : WHEN condition mult_cmd case_when'
+	p[0] = symbol_coder.c_case_when(p)
+
+
+def p_case_when_end(p):
+	'case_when : WHEN condition mult_cmd else'
+	p[0] = symbol_coder.c_case_when(p)
+
+def p_else_def(p):
+	'else : ELSE mult_cmd END'
+	p[0] = symbol_coder.c_else(p)
+
+def p_condition(p):
+	'''mult_conds : condition log_oper mult_conds
+				  | condition
+				  '''
+	p[0] = symbol_coder.c_concatenate(p)
+
+def p_condition_def(p):
+	'''condition : cmd operator cmd 
+				 | cmd
+				 '''
+	p[0] = symbol_coder.c_condition(p)
+
+def p_operator(p):
+	'''operator : EQUAL EQUAL
+				| EXCL_MARK EQUAL
+				| GT
+				| LT
+				| GT EQUAL
+				| LT EQUAL
+				| GT EQUAL LT
+				| EQUAL EQUAL EQUAL
+				'''
+	p[0] = symbol_coder.c_concatenate(p)
+
+def p_logical_operator(p):
+	'''log_oper : AND 
+				| OR
+				'''
+	p[0] = symbol_coder.c_concatenate(p)		
+
+
 
 
 def p_class(p):
@@ -154,8 +239,6 @@ def p_inheritance(p):
 def p_module_def(p):
 	'module : MODULE CONSTANT symbol_ruby END'
 	p[0] = symbol_coder.c_module(p)		   
-
-
 
 ################################################ JASON IS WORKING HERE ############################################
 def p_array(p):
