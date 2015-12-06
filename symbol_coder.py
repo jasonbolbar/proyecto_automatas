@@ -6,13 +6,13 @@ def c_concatenate_by_index(p, begin, end):
 	return "".join([p[i] for i in range(begin,end+1)])
 
 def c_method(p):
-	return 'def ' + c_concatenate_by_index(p,2,6) + '\n' + p[7] + 'end\n'	
+	return 'def ' + c_concatenate_by_index(p,2,6) + '\n' + p[7] + 'end\n' + p[8]	
 
 def c_instructions(p):
 	return p[1] + '\n'
 
 def c_class(p):
-	return 'class ' + p[2] + p[3] + '\n' + p[4] + 'end\n'
+	return 'class ' + p[2] + p[3] + '\n' + p[4] + 'end\n' + p[6]
 
 def c_inheritance(p):
 	if len(p) == 1:
@@ -21,7 +21,7 @@ def c_inheritance(p):
 		return ' ' + '<' + ' ' + p[2]	
 
 def c_module(p):
-	return 'module ' + p[2]	+ '\n' + p[3] + 'end\n'
+	return 'module ' + p[2]	+ '\n' + p[3] + 'end\n' + p[5]
 
 
 def c_replace_method_name(p):

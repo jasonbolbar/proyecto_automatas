@@ -9,8 +9,8 @@ def p_symbol_ruby(p):
 
 	'''symbol_ruby : method symbol_ruby
 				   | new_cmd symbol_ruby
-				   | class
-				   | module
+				   | class symbol_ruby
+				   | module symbol_ruby
 				   | COMMENT symbol_ruby
 				   | __FILE__ symbol_ruby
 				   | __LINE__ symbol_ruby
@@ -112,18 +112,13 @@ def p_ins_single(p):
 		  '''
 	p[0] = symbol_coder.c_concatenate(p)
 def p_assig(p):
-	'assig : variable assig_operator ins'
-	p[0] = symbol_coder.c_concatenate(p)	
-
-def p_assig_operator(p):
-	'''assig_operator : OPERATOR EQUAL
-	                | EQUAL '''
+	'assig : variable EQUAL ins'
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_cmd(p):
 	'''cmd : method_call
 		   | assign_value 
-		   | namespaced_name PERIOD method_call
+		   | CONSTANT PERIOD method_call
 	       | assign_value PERIOD method_call
 	       | arithmetical_operation
 	       '''
@@ -132,19 +127,25 @@ def p_cmd(p):
 def p_method_main(p):
 	'''method_call : method_cl PERIOD method_call 
 	               | method_cl
+	               | method_block
 	               '''
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_method_cl_params(p):
-	'method_cl : method_call_name OPEN_PARENTH method_call_parameters CLOSE_PARENTH block'
+	'''method_cl : method_call_name OPEN_PARENTH method_call_parameters CLOSE_PARENTH
+				 '''
 	p[0] = symbol_coder.c_concatenate(p)
+
+def p_method_block_params(p):
+	'''method_block : method_cl block
+				 '''
+	p[0] = symbol_coder.c_concatenate(p)	
 
 def p_block(p):
 	'''block : DO pipe_params mult_cmd END
 			 | OPEN_BRACE pipe_params mult_cmd CLOSE_BRACE
 			 | DO mult_cmd END
 			 | OPEN_BRACE mult_cmd CLOSE_BRACE
-			 | 
 	'''
 	p[0] = symbol_coder.c_block(p)	
 
@@ -287,13 +288,12 @@ def p_logical_operator(p):
 
 
 def p_exception(p):
-	'exception : BEGIN mult_cmd RESCUE rescue mult_cmd else_cond ensure END'
+	'''exception : BEGIN mult_cmd RESCUE rescue mult_cmd else_cond ensure END '''
 	p[0] = symbol_coder.c_exception(p)
 
 def p_rescue(p):
-	'''rescue : namespaced_name
-				| namespaced_name EXC_OP variable
-				| 
+	'''rescue : CONSTANT
+				| CONSTANT EXC_OP variable
 				'''
 	p[0] = symbol_coder.c_rescue(p)
 
@@ -304,24 +304,18 @@ def p_ensure(p):
 	p[0] = symbol_coder.c_ensure(p)		 
 
 def p_class(p):
-	'class : CLASS namespaced_name inheritance symbol_ruby END'
+	'class : CLASS CONSTANT inheritance symbol_ruby END'
 	p[0] = symbol_coder.c_class(p)
 
 def p_inheritance(p):
-	'''inheritance : INHERITANCE namespaced_name
+	'''inheritance : INHERITANCE CONSTANT
 				   |
 				   '''	
 	p[0] = symbol_coder.c_inheritance(p)	
 
 def p_module_def(p):
-	'module : MODULE namespaced_name symbol_ruby END'
+	'module : MODULE CONSTANT symbol_ruby END'
 	p[0] = symbol_coder.c_module(p)		   
-
-def p_namespaced_name(p):
-	'''namespaced_name : CONSTANT COLON COLON namespaced_name 
-					   | CONSTANT
-	'''
-	p[0] = symbol_coder.c_concatenate(p)
 
 def p_array(p):
 	'array : OPEN_SQT array_content CLOSE_SQT'
