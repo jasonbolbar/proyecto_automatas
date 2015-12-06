@@ -23,6 +23,7 @@ def c_inheritance(p):
 def c_module(p):
 	return 'module ' + p[2]	+ '\n' + p[3] + 'end\n'
 
+
 def c_replace_method_name(p):
 	if p[1] == '&*&':
 		return 'super'
@@ -44,5 +45,27 @@ def c_block(p):
 		else:
 			return c_concatenate(p)
 
+def c_if(p):
+	return 'if ' + c_concatenate_by_index(p,2,4) 
 
-################################################ JASON IS WORKING HERE ############################################
+def c_unless(p):
+	return 'if ' + c_concatenate_by_index(p,2,4) 	
+
+def c_else_end(p):
+	if p[1] == '<$>':
+		return 'end\n'		
+	else:
+		return 	p[1]
+
+def c_while(p):
+	return 'while ' + p[2] + p[3] + 'end\n'
+
+def c_case(p):
+	return 'case ' + p[2] + p[3]
+
+def c_case_when(p):
+	return 'when ' + c_concatenate_by_index(p,2,len(p)-1) 	
+
+def c_else(p):
+	return 'else\n' + p[2] + 'end\n'				
+
