@@ -41,7 +41,10 @@ def c_case_when(p):
 	return 'when ' + c_concatenate_by_index(p,2,len(p)-1) 	
 
 def c_else(p):
-	return 'else\n' + p[2] + 'end\n'				
+	return 'else\n' + p[2] + 'end\n'
+
+def c_condition(p):
+	return p[1] + '\n'					
 
 
 ################################################ JASON IS WORKING HERE ############################################

@@ -200,9 +200,13 @@ def p_condition(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_condition_def(p):
-	'''condition : cmd operator cmd 
-				 | cmd
+	'''condition : cmd operator end_cond 
+				 | end_cond
 				 '''
+	p[0] = symbol_coder.c_concatenate(p)
+
+def p_end_condition(p):
+	'end_cond : cmd'	
 	p[0] = symbol_coder.c_condition(p)
 
 def p_operator(p):
