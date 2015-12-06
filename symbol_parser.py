@@ -116,12 +116,9 @@ def p_assig_operator(p):
 	                | EQUAL '''
 	p[0] = symbol_coder.c_concatenate(p)
 
-		
-
 def p_cmd(p):
 	'''cmd : method_call
 		   | assign_value 
-           | arithmetical_operation
 	       | assign_value PERIOD method_call
 	       '''
 	p[0] = symbol_coder.c_concatenate(p)		
@@ -182,6 +179,7 @@ def p_method_call_name(p):
 	                     | NOT
 	                     '''
 	p[0] = symbol_coder.c_replace_method_name(p)
+
 def p_cond_ins(p):
 	'''cond_ins : if
 				| unless
@@ -213,7 +211,7 @@ def p_else_conditional(p):
 	'''else_cond : else
 			   	 |
 			     '''	
-	p[0] = symbol_coder.c_else_end(p)		     
+	p[0] = symbol_coder.c_concatenate(p)		     
 
 def p_while_complex(p):
 	'while : while_word mult_conds mult_cmd END'
@@ -223,6 +221,7 @@ def p_while_word(p):
 	'''while_word : WHILE
 				  | UNTIL
 				  '''
+	p[0] = symbol_coder.c_concatenate(p)			  
 
 def p_case(p):
 	'case : CASE condition case_when END'
@@ -237,7 +236,7 @@ def p_case_when_end(p):
 	'case_when : WHEN condition mult_cmd else'
 	p[0] = symbol_coder.c_case_when(p)
 
-def p_else_def(p):
+def p_else(p):
 	'else : ELSE mult_cmd'
 	p[0] = symbol_coder.c_else(p)
 
@@ -255,7 +254,7 @@ def p_condition_def(p):
 
 def p_end_condition(p):
 	'end_cond : cmd'	
-	p[0] = symbol_coder.c_condition(p)
+	p[0] = symbol_coder.c_concatenate(p)
 
 def p_operator(p):
 	'''operator : EQUAL EQUAL
@@ -277,21 +276,21 @@ def p_logical_operator(p):
 
 
 def p_exception(p):
-	'exception : BEGIN mult_cmd RESCUE rescue else_cond ensure END'
-	p[0] = symbol_coder.c_concatenate(p)
+	'exception : BEGIN mult_cmd RESCUE rescue mult_cmd else_cond ensure END'
+	p[0] = symbol_coder.c_exception(p)
 
 def p_rescue(p):
-	'''rescue : CONSTANT mult_cmd
-				| CONSTANT EXC_OP variable mult_cmd
+	'''rescue : namespaced_name
+				| namespaced_name EXC_OP variable
 				| 
 				'''
-	p[0] = symbol_coder.c_concatenate(p)
+	p[0] = symbol_coder.c_rescue(p)
 
 def p_ensure(p):
 	'''ensure : ENSURE mult_cmd
 			 |
 			 '''
-	p[0] = symbol_coder.c_concatenate(p)		 
+	p[0] = symbol_coder.c_ensure(p)		 
 
 def p_class(p):
 	'class : CLASS namespaced_name inheritance symbol_ruby END'
@@ -337,13 +336,13 @@ def p_hash_content(p):
 
 def p_hash_key(p):
 	'''hash_key : value'''
-	p[0] = p[1]
+	p[0] = symbol_coder.c_concatenate(p)
 
 def p_assign_value(p):
 	'''assign_value : value 
 				    | variable
 				    '''
-	p[0] = p[1]	
+	p[0] = symbol_coder.c_concatenate(p)
 
 def p_arithmetical_operation(p):
 	'''

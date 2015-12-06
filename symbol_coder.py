@@ -62,14 +62,6 @@ def c_elsif(p):
 		else:
 			return 'elsif ' + p[2] + '\n' + p[3]  + '\n' + p[4]  		
 
-
-def c_else_end(p):
-	if len(p) != 1:
-		if p[1] == '<$>':
-			return 'end\n'		
-		else:
-			return 	p[1]
-
 def c_while(p):
 	return 'while ' + p[2] + p[3] + 'end\n'
 
@@ -80,8 +72,24 @@ def c_case_when(p):
 	return 'when ' + c_concatenate_by_index(p,2,len(p)-1) 	
 
 def c_else(p):
-	return 'else\n' + p[2]
+	return 'else\n' + p[2]	
 
-def c_condition(p):
-	return p[1]					
+def c_exception(p):
+	return 'begin\n' + p[2] + 'rescue ' + p[4] + '\n' + p[5] + p[6] + 'end\n'		
+
+def c_rescue(p):	
+	if len(p) > 2:
+		return p[1] + ' => ' + p[3]
+	elif len(p) == 2:
+		return p[1]	
+	else:
+		return ''	
+
+def c_ensure(p):
+	if len(p) == 1:
+		return ''
+	else:	
+		return 'ensure\n' + p[2]	
+
+
 
