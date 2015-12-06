@@ -109,17 +109,19 @@ def p_ins_single(p):
 	'''ins : cmd
 		   | cond_ins
 		   | exception
+		   | assign_value
 		  '''
 	p[0] = symbol_coder.c_concatenate(p)
+
 def p_assig(p):
-	'assig : variable EQUAL ins'
+	'''assig : variable EQUAL cmd
+			 | variable EQUAL assign_value'''
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_cmd(p):
 	'''cmd : method_call
-		   | assign_value 
 		   | CONSTANT PERIOD method_call
-	       | assign_value PERIOD method_call
+	       | variable PERIOD method_call
 	       | arithmetical_operation
 	       '''
 	p[0] = symbol_coder.c_concatenate(p)		
@@ -199,7 +201,8 @@ def p_cond_ins(p):
 	p[0] = symbol_coder.c_concatenate(p)		
 
 def p_if_else_simple(p):
-	'if : condition QU_MARK cmd COLON cmd'
+	'''if : condition QU_MARK cmd COLON cmd
+		  | condition QU_MARK assign_value COLON assign_value'''
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_if_complex(p):
@@ -257,13 +260,12 @@ def p_condition(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_condition_def(p):
-	'''condition : cmd operator end_cond 
-				 | end_cond
+	'''condition : cmd operator cmd 
+				 | value operator value
+				 | variable operator variable
+				 | cmd
+				 | assign_value
 				 '''
-	p[0] = symbol_coder.c_concatenate(p)
-
-def p_end_condition(p):
-	'end_cond : cmd'	
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_operator(p):
@@ -349,7 +351,7 @@ def p_assign_value(p):
 
 def p_arithmetical_operation(p):
 	'''
-	arithmetical_operation : cmd OPERATOR cmd
+	arithmetical_operation : assign_value OPERATOR assign_value
 	'''
 	p[0] = symbol_coder.c_concatenate(p)
 
