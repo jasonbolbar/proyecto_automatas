@@ -318,9 +318,9 @@ def p_assign_value(p):
 
 def p_arithmetical_operation(p):
 	'''
-	arithmetical_operation : value OPERATOR arithmetical_operation
+	arithmetical_operation : assign_value OPERATOR arithmetical_operation
 						   | OPEN_PARENTH arithmetical_operation CLOSE_PARENTH
-						   | value OPERATOR value
+						   | assign_value OPERATOR assign_value
 	'''
 	p[0] = symbol_coder.c_concatenate(p)
 
