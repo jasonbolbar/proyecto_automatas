@@ -14,6 +14,7 @@ def p_symbol_ruby(p):
 				   | COMMENT symbol_ruby
 				   | __FILE__ symbol_ruby
 				   | __LINE__ symbol_ruby
+				   | __DIR__ symbol_ruby
 				   | 
 	'''
 	p[0] = symbol_coder.c_concatenate(p)
@@ -182,6 +183,11 @@ def p_method_call_name(p):
 	                     | ALIAS 
 	                     | RAISE
 	                     | NOT
+	                     | UNDEF
+	                     | BREAK
+	                     | RETRY
+	                     | REDO
+	                     | NEXT
 	                     '''
 	p[0] = symbol_coder.c_replace_method_name(p)
 
@@ -198,7 +204,7 @@ def p_if_else_simple(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_if_complex(p):
-	'if : IF mult_conds mult_cmd else_cond END'
+	'if : IF mult_conds mult_cmd elsif else_cond END'
 	p[0] = symbol_coder.c_if(p)
 
 def p_unless_complex(p):

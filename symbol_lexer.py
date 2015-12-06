@@ -9,7 +9,6 @@ RESERVED = {
 '__dir__':'__DIR__',
 'and':'AND',
 'or':'OR',
-'in':'IN',
 'self':'SELF',
 'redo':"REDO",
 'false':'FALSE',
@@ -25,12 +24,12 @@ RESERVED = {
 ################################## TOKENS ##################################
 
 tokens = ('__FILE__','__LINE__','IDENTIFIER','COMMENT','DEF','END','UNLESS',
-	'IF','AND','OR','IN','BEGIN','ENSURE','REDO','SUPER','BREAK','DO','FALSE',
-	'NEXT','THEN','WHEN','CASE','ELSE','FOR','NIL','RETRY','WHILE','ALIAS',
+	'IF','AND','OR','BEGIN','ENSURE','REDO','SUPER','BREAK','DO','FALSE',
+	'NEXT','WHEN','CASE','ELSE','NIL','RETRY','WHILE','ALIAS',
 	'CLASS','INHERITANCE','ELSIF','NOT','RETURN','UNDEF','CONSTANT','YIELD','FIXNUM',
 	'FLOAT','STRING','SYMBOL', 'OPERATOR','PIPE','COMMA',
 	'EQUAL','COLON','QU_MARK','EXCL_MARK','OPEN_PARENTH','CLOSE_PARENTH','OPEN_BRACE',
-	'CLOSE_BRACE','SEMICOLON','PERIOD','MODULE','RESCUE','TRUE','GT','LT','SPECIAL_VAR',
+	'CLOSE_BRACE','PERIOD','MODULE','RESCUE','TRUE','GT','LT','SPECIAL_VAR',
 	'__DIR__','DOLLAR','AT','UNTIL','OPEN_SQT','CLOSE_SQT','SPECIAL_NUM', 'SELF', 'RAISE', 
     'EXC_OP')
 
@@ -54,11 +53,9 @@ t_DO = r'{\+}'
 t_FALSE = r'FALSE'
 t_NEXT = r'~@'
 t_RESCUE = r'%\^'
-t_THEN = r'>-'
 t_WHEN = r'~:'
 t_CASE = r'>:'
 t_ELSE = r'\?@' 
-t_FOR = r'{\#}'
 t_TRUE = r'TRUE'
 t_WHILE = r'\[\?\]'
 t_UNTIL = r'\]\?\['
@@ -102,7 +99,6 @@ t_CLOSE_BRACE = r'\}'
 t_OPEN_SQT = r'\['
 t_CLOSE_SQT = r'\]'
 t_PERIOD = r'\.'
-t_SEMICOLON = r'\;'
 t_GT = r'<'
 t_LT = r'>'
 t_EXC_OP = r'\=\>'
