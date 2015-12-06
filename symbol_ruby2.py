@@ -4,7 +4,7 @@ import getopt
 
 def write_compiled(filename,compiled):
 	file = open(filename.split('.')[0] + '.rb','w')
-	f.truncate()
+	file.truncate()
 	file.write(compiled)
 	file.close()
 

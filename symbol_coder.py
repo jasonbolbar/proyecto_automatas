@@ -64,10 +64,11 @@ def c_elsif(p):
 
 
 def c_else_end(p):
-	if p[1] == '<$>':
-		return 'end\n'		
-	else:
-		return 	p[1]
+	if len(p) != 1:
+		if p[1] == '<$>':
+			return 'end\n'		
+		else:
+			return 	p[1]
 
 def c_while(p):
 	return 'while ' + p[2] + p[3] + 'end\n'

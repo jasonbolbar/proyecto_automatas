@@ -116,11 +116,6 @@ def p_assig_operator(p):
 	                | EQUAL '''
 	p[0] = symbol_coder.c_concatenate(p)
 
-def p_ins_single(p):
-	'''ins : cmd
-		   | cond_ins
-		  '''
-	p[0] = symbol_coder.c_concatenate(p)
 		
 
 def p_cmd(p):
@@ -282,7 +277,7 @@ def p_logical_operator(p):
 
 
 def p_exception(p):
-	'exception : BEGIN mult_cmd RESCUE rescue else_cond ensure end'
+	'exception : BEGIN mult_cmd RESCUE rescue else_cond ensure END'
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_rescue(p):
