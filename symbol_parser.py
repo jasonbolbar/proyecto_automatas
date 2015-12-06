@@ -353,6 +353,8 @@ def p_arithmetical_operation(p):
 	'''
 	arithmetical_operation : cmd OPERATOR cmd 
 						   | assign_value OPERATOR assign_value
+						   | cmd OPERATOR assign_value
+						   | assign_value OPERATOR cmd 
 	'''
 	p[0] = symbol_coder.c_concatenate(p)
 
