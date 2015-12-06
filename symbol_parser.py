@@ -137,17 +137,15 @@ def p_method_cl_params(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_method_block_params(p):
-	'''method_block : method_cl block
-				 '''
+	'''method_block : method_cl block_do
+				 	'''
 	p[0] = symbol_coder.c_concatenate(p)	
 
-def p_block(p):
-	'''block : DO pipe_params mult_cmd END
-			 | OPEN_BRACE pipe_params mult_cmd CLOSE_BRACE
-			 | DO mult_cmd END
-			 | OPEN_BRACE mult_cmd CLOSE_BRACE
-	'''
-	p[0] = symbol_coder.c_block(p)	
+def p_block_do(p):
+	'''block_do : DO pipe_params mult_cmd END
+			    | DO mult_cmd END
+				'''
+	p[0] = symbol_coder.c_block(p)
 
 def p_method_call_parameters(p):
 	'''
