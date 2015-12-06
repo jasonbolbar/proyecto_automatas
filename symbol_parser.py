@@ -110,6 +110,7 @@ def p_ins_single(p):
 		   | cond_ins
 		   | exception
 		   | assign_value
+		   | arithmetical_operation
 		  '''
 	p[0] = symbol_coder.c_concatenate(p)
 
@@ -122,7 +123,6 @@ def p_cmd(p):
 	'''cmd : method_call
 		   | CONSTANT PERIOD method_call
 	       | variable PERIOD method_call
-	       | arithmetical_operation
 	       '''
 	p[0] = symbol_coder.c_concatenate(p)		
 
@@ -351,7 +351,8 @@ def p_assign_value(p):
 
 def p_arithmetical_operation(p):
 	'''
-	arithmetical_operation : assign_value OPERATOR assign_value
+	arithmetical_operation : cmd OPERATOR cmd 
+						   | assign_value OPERATOR assign_value
 	'''
 	p[0] = symbol_coder.c_concatenate(p)
 
