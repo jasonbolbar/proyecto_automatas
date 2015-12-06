@@ -96,6 +96,7 @@ def p_new_cmd_single(p):
 def p_ins_single(p):
 	'''ins : cmd
 		   | cond_ins
+		   | exception
 		  '''
 	p[0] = symbol_coder.c_concatenate(p)
 
@@ -145,7 +146,6 @@ def p_parameter_def(p):
 	'parameter : assign_value COMMA parameter'
 	p[0] = symbol_coder.c_concatenate(p)
 
-
 def p_cond_ins(p):
 	'''cond_ins : if
 				| unless
@@ -159,16 +159,16 @@ def p_if_else_simple(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_if_complex(p):
-	'if : IF mult_conds mult_cmd else_cond'
+	'if : IF mult_conds mult_cmd else_cond END'
 	p[0] = symbol_coder.c_if(p)
 
 def p_unless_complex(p):
-	'unless : UNLESS mult_conds mult_cmd else_cond'
+	'unless : UNLESS mult_conds mult_cmd else_cond END'
 	p[0] = symbol_coder.c_unless(p)
 
 def p_else_conditional(p):
 	'''else_cond : else
-			   	 | END
+			   	 |
 			     '''	
 	p[0] = symbol_coder.c_else_end(p)		     
 
@@ -177,7 +177,7 @@ def p_while_complex(p):
 	p[0] = symbol_coder.c_while(p)
 
 def p_case(p):
-	'case : CASE condition case_when'
+	'case : CASE condition case_when END'
 	p[0] = symbol_coder.c_case(p)
 
 def p_case_when_cont(p):
@@ -190,7 +190,7 @@ def p_case_when_end(p):
 	p[0] = symbol_coder.c_case_when(p)
 
 def p_else_def(p):
-	'else : ELSE mult_cmd END'
+	'else : ELSE mult_cmd'
 	p[0] = symbol_coder.c_else(p)
 
 def p_condition(p):
@@ -227,8 +227,22 @@ def p_logical_operator(p):
 				'''
 	p[0] = symbol_coder.c_concatenate(p)		
 
+def p_exception(p):
+	'exception : BEGIN mult_cmd RESCUE rescue else_cond ensure end'
+	p[0] = symbol_coder.c_concatenate(p)
 
+def p_rescue(p):
+	'''rescue : CONSTANT mult_cmd
+				| CONSTANT EXC_OP variable mult_cmd
+				| 
+				'''
+	p[0] = symbol_coder.c_concatenate(p)
 
+def p_ensure(p):
+	'''ensure : ENSURE mult_cmd
+			 |
+			 '''
+	p[0] = symbol_coder.c_concatenate(p)		 
 
 def p_class(p):
 	'class : CLASS CONSTANT inheritance symbol_ruby END'
