@@ -1,6 +1,7 @@
 import symbol_lexer
 import symbol_coder
 import ply.yacc as yacc
+import pdb
 
 tokens = symbol_lexer.tokens
 
@@ -11,6 +12,8 @@ def p_symbol_ruby(p):
 				   | class
 				   | module
 				   | COMMENT symbol_ruby
+				   | __FILE__ symbol_ruby
+				   | __LINE__ symbol_ruby
 				   | 
 	'''
 	p[0] = symbol_coder.c_concatenate(p)
@@ -121,8 +124,9 @@ def p_assig_operator(p):
 def p_cmd(p):
 	'''cmd : method_call
 		   | assign_value 
-           | arithmetical_operation
+		   | namespaced_name PERIOD method_call
 	       | assign_value PERIOD method_call
+	       | arithmetical_operation
 	       '''
 	p[0] = symbol_coder.c_concatenate(p)		
 
@@ -347,11 +351,13 @@ def p_assign_value(p):
 
 def p_arithmetical_operation(p):
 	'''
-	arithmetical_operation : assign_value OPERATOR arithmetical_operation
-						   | OPEN_PARENTH arithmetical_operation CLOSE_PARENTH
-						   | assign_value OPERATOR assign_value
+	arithmetical_operation : cmd OPERATOR cmd
 	'''
 	p[0] = symbol_coder.c_concatenate(p)
+
+
+def p_error(p):
+	print("Syntax error at token {} in line {}".format(p.value,p.lineno))	
 
 
 

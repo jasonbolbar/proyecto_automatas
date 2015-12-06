@@ -115,6 +115,7 @@ t_SPECIAL_VAR = r'\$(!|@|&|`|\'|\+|[0-9]|~|=|/|\\|,|;|\.|<|>|_|\*|\$|\?|:|\"|-d|
 
 def t_newline(t):
     r'\n+'
+    t.lexer.lineno += len(t.value)
     pass
 
 def t_tab(t):
@@ -127,7 +128,7 @@ def t_whitespace(t):
 
 
 def t_error(t):
-    print t
+    print 'Error in line {}, column {}, with {}'.format(t.lineno,t.lexpos,t.value)
     t.lexer.skip(1)
 
 lexer = lex.lex()    
