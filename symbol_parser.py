@@ -10,6 +10,7 @@ def p_symbol_ruby(p):
 				   | new_cmd symbol_ruby
 				   | class
 				   | module
+				   | COMMENT symbol_ruby
 				   | 
 	'''
 	p[0] = symbol_coder.c_concatenate(p)
@@ -114,15 +115,7 @@ def p_ins_single(p):
 		   | cond_ins
 		  '''
 	p[0] = symbol_coder.c_concatenate(p)
-
-def p_assig(p):
-	'assig : variable assig_operator ins'
-	p[0] = symbol_coder.c_concatenate(p)	
-
-def p_assig_operator(p):
-	'''assig_operator : OPERATOR EQUAL
-	                | EQUAL '''
-	p[0] = symbol_coder.c_concatenate(p)		
+		
 
 def p_cmd(p):
 	'''cmd : method_call
@@ -184,6 +177,8 @@ def p_method_call_name(p):
 						 | YIELD 
 	                     | RETURN
 	                     | ALIAS 
+	                     | RAISE
+	                     | NOT
 	                     '''
 	p[0] = symbol_coder.c_replace_method_name(p)
 
@@ -200,12 +195,19 @@ def p_if_else_simple(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_if_complex(p):
-	'if : IF mult_conds mult_cmd else_cond'
+	'if : IF mult_conds mult_cmd elsif else_cond'
 	p[0] = symbol_coder.c_if(p)
 
 def p_unless_complex(p):
-	'unless : UNLESS mult_conds mult_cmd else_cond'
+	'unless : UNLESS mult_conds mult_cmd elsif else_cond'
 	p[0] = symbol_coder.c_unless(p)
+
+def p_elsif(p):
+	'''
+	elsif : ELSIF mult_conds mult_cmd elsif
+		  | 
+	'''
+	p[0] = symbol_coder.c_elsif(p)
 
 def p_else_conditional(p):
 	'''else_cond : else
@@ -214,8 +216,13 @@ def p_else_conditional(p):
 	p[0] = symbol_coder.c_else_end(p)		     
 
 def p_while_complex(p):
-	'while : WHILE mult_conds mult_cmd END'
+	'while : while_word mult_conds mult_cmd END'
 	p[0] = symbol_coder.c_while(p)
+
+def p_while_word(p):
+	'''while_word : WHILE
+				  | UNTIL
+				  '''
 
 def p_case(p):
 	'case : CASE condition case_when'

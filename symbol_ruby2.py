@@ -2,6 +2,12 @@ import symbol_parser
 import sys
 import getopt
 
+def write_compiled(filename,compiled):
+	file = open(filename.split('.')[0] + '.rb','w')
+	f.truncate()
+	file.write(compiled)
+	file.close()
+
 
 def main(argv):
 	inputfile = ''
@@ -17,6 +23,7 @@ def main(argv):
 			sys.exit()
 		elif opt in ('-i','--ifile'):
 			inputfile = arg
-	print parser.parse(open(inputfile).read())		
+	compiled = parser.parse(open(inputfile).read())	
+	write_compiled(inputfile,compiled)	
 if __name__ == "__main__":
 	main(sys.argv[1:])	

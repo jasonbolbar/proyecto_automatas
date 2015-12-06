@@ -1,6 +1,6 @@
 import pdb
 def c_concatenate(p):
-	return "".join([p[i] for i in range(1,len(p))])
+	return "".join([p[i] for i in range(1,len(p))if p[i] != ''])
 
 def c_concatenate_by_index(p, begin, end):
 	return "".join([p[i] for i in range(begin,end+1)])
@@ -46,10 +46,19 @@ def c_block(p):
 			return c_concatenate(p)
 
 def c_if(p):
-	return 'if ' + c_concatenate_by_index(p,2,4) 
+	return 'if ' + p[2] + '\n' + p[3]  + '\n' + p[4] + '\n '+ p[5] 
 
 def c_unless(p):
-	return 'if ' + c_concatenate_by_index(p,2,4) 	
+	return 'unless' + p[2] + '\n' + p[3]  + '\n' + p[4] + '\n '+ p[5] 
+
+def c_elsif(p):
+	if len(p) == 1:
+		return ''
+	else:
+		if p[4] == '':
+			return 'elsif ' + p[2] + '\n' + p[3]
+		else:
+			return 'elsif ' + p[2] + '\n' + p[3]  + '\n' + p[4]  		
 
 def c_else_end(p):
 	if p[1] == '<$>':
@@ -70,5 +79,5 @@ def c_else(p):
 	return 'else\n' + p[2] + 'end\n'
 
 def c_condition(p):
-	return p[1] + '\n'					
+	return p[1]					
 
