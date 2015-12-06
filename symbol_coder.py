@@ -31,6 +31,8 @@ def c_replace_method_name(p):
 		return 'return'
 	if p[1] ==  '{>}':
 		return 'yield'
+	if p[1] == '%':
+		return 'raise'
 	return p[1]
 
 def c_block(p):
@@ -46,10 +48,10 @@ def c_block(p):
 			return c_concatenate(p)
 
 def c_if(p):
-	return 'if ' + p[2] + '\n' + p[3]  + '\n' + p[4] + '\n '+ p[5] 
+	return 'if ' + p[2] + p[3] + 'end\n'
 
 def c_unless(p):
-	return 'unless' + p[2] + '\n' + p[3]  + '\n' + p[4] + '\n '+ p[5] 
+	return 'if ' + p[2] + p[3] + 'end\n'
 
 def c_elsif(p):
 	if len(p) == 1:
@@ -59,6 +61,7 @@ def c_elsif(p):
 			return 'elsif ' + p[2] + '\n' + p[3]
 		else:
 			return 'elsif ' + p[2] + '\n' + p[3]  + '\n' + p[4]  		
+
 
 def c_else_end(p):
 	if p[1] == '<$>':
@@ -76,7 +79,7 @@ def c_case_when(p):
 	return 'when ' + c_concatenate_by_index(p,2,len(p)-1) 	
 
 def c_else(p):
-	return 'else\n' + p[2] + 'end\n'
+	return 'else\n' + p[2]
 
 def c_condition(p):
 	return p[1]					

@@ -101,6 +101,16 @@ def p_new_cmd_single(p):
 	           | assig'''
 	p[0] = symbol_coder.c_instructions(p)
 
+<<<<<<< HEAD
+=======
+def p_ins_single(p):
+	'''ins : cmd
+		   | cond_ins
+		   | exception
+		  '''
+	p[0] = symbol_coder.c_concatenate(p)
+
+>>>>>>> 21321048759b01a22f58621bcabb1b2062128132
 def p_assig(p):
 	'assig : variable assig_operator ins'
 	p[0] = symbol_coder.c_concatenate(p)	
@@ -170,6 +180,7 @@ def p_parameter_def(p):
 	'parameter : ins COMMA parameter'
 	p[0] = symbol_coder.c_concatenate(p)
 
+<<<<<<< HEAD
 
 def p_method_call_name(p):
 	''' method_call_name : IDENTIFIER 
@@ -182,6 +193,8 @@ def p_method_call_name(p):
 	                     '''
 	p[0] = symbol_coder.c_replace_method_name(p)
 
+=======
+>>>>>>> 21321048759b01a22f58621bcabb1b2062128132
 def p_cond_ins(p):
 	'''cond_ins : if
 				| unless
@@ -195,11 +208,19 @@ def p_if_else_simple(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_if_complex(p):
+<<<<<<< HEAD
 	'if : IF mult_conds mult_cmd elsif else_cond'
 	p[0] = symbol_coder.c_if(p)
 
 def p_unless_complex(p):
 	'unless : UNLESS mult_conds mult_cmd elsif else_cond'
+=======
+	'if : IF mult_conds mult_cmd else_cond END'
+	p[0] = symbol_coder.c_if(p)
+
+def p_unless_complex(p):
+	'unless : UNLESS mult_conds mult_cmd else_cond END'
+>>>>>>> 21321048759b01a22f58621bcabb1b2062128132
 	p[0] = symbol_coder.c_unless(p)
 
 def p_elsif(p):
@@ -211,7 +232,7 @@ def p_elsif(p):
 
 def p_else_conditional(p):
 	'''else_cond : else
-			   	 | END
+			   	 |
 			     '''	
 	p[0] = symbol_coder.c_else_end(p)		     
 
@@ -225,7 +246,7 @@ def p_while_word(p):
 				  '''
 
 def p_case(p):
-	'case : CASE condition case_when'
+	'case : CASE condition case_when END'
 	p[0] = symbol_coder.c_case(p)
 
 def p_case_when_cont(p):
@@ -238,7 +259,7 @@ def p_case_when_end(p):
 	p[0] = symbol_coder.c_case_when(p)
 
 def p_else_def(p):
-	'else : ELSE mult_cmd END'
+	'else : ELSE mult_cmd'
 	p[0] = symbol_coder.c_else(p)
 
 def p_condition(p):
@@ -275,6 +296,26 @@ def p_logical_operator(p):
 				'''
 	p[0] = symbol_coder.c_concatenate(p)		
 
+<<<<<<< HEAD
+=======
+def p_exception(p):
+	'exception : BEGIN mult_cmd RESCUE rescue else_cond ensure end'
+	p[0] = symbol_coder.c_concatenate(p)
+
+def p_rescue(p):
+	'''rescue : CONSTANT mult_cmd
+				| CONSTANT EXC_OP variable mult_cmd
+				| 
+				'''
+	p[0] = symbol_coder.c_concatenate(p)
+
+def p_ensure(p):
+	'''ensure : ENSURE mult_cmd
+			 |
+			 '''
+	p[0] = symbol_coder.c_concatenate(p)		 
+
+>>>>>>> 21321048759b01a22f58621bcabb1b2062128132
 def p_class(p):
 	'class : CLASS namespaced_name inheritance symbol_ruby END'
 	p[0] = symbol_coder.c_class(p)

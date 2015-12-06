@@ -31,8 +31,8 @@ tokens = ('__FILE__','__LINE__','IDENTIFIER','COMMENT','DEF','END','UNLESS',
 	'FLOAT','STRING','SYMBOL', 'OPERATOR','PIPE','COMMA',
 	'EQUAL','COLON','QU_MARK','EXCL_MARK','OPEN_PARENTH','CLOSE_PARENTH','OPEN_BRACE',
 	'CLOSE_BRACE','SEMICOLON','PERIOD','MODULE','RESCUE','TRUE','GT','LT','SPECIAL_VAR',
-	'__DIR__','DOLLAR','AT','UNTIL','OPEN_SQT','CLOSE_SQT','SPECIAL_NUM', 'SELF', 'RAISE'
-	)
+	'__DIR__','DOLLAR','AT','UNTIL','OPEN_SQT','CLOSE_SQT','SPECIAL_NUM', 'SELF', 'RAISE', 
+    'EXC_OP'
 
 
 ################################## ANALISIS LEXICO ############################################
@@ -105,6 +105,7 @@ t_PERIOD = r'\.'
 t_SEMICOLON = r'\;'
 t_GT = r'<'
 t_LT = r'>'
+t_EXC_OP = r'\=\>'
 t_DOLLAR = r'\$'
 t_AT = r'@'
 t_SPECIAL_VAR = r'\$(!|@|&|`|\'|\+|[0-9]|~|=|/|\\|,|;|\.|<|>|_|\*|\$|\?|:|\"|-d|-K|-v|-a|-i|-l|-p|-w)'
