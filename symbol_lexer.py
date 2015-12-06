@@ -32,7 +32,7 @@ tokens = ('__FILE__','__LINE__','IDENTIFIER','COMMENT','DEF','END','UNLESS',
 	'EQUAL','COLON','QU_MARK','EXCL_MARK','OPEN_PARENTH','CLOSE_PARENTH','OPEN_BRACE',
 	'CLOSE_BRACE','SEMICOLON','PERIOD','MODULE','RESCUE','TRUE','GT','LT','SPECIAL_VAR',
 	'__DIR__','DOLLAR','AT','UNTIL','OPEN_SQT','CLOSE_SQT','SPECIAL_NUM', 'SELF', 'RAISE', 
-    'EXC_OP'
+    'EXC_OP')
 
 
 ################################## ANALISIS LEXICO ############################################
