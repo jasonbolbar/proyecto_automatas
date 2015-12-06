@@ -121,7 +121,7 @@ def p_assig(p):
 
 def p_cmd(p):
 	'''cmd : method_call
-		   | CONSTANT PERIOD method_call
+		   | namespace PERIOD method_call
 	       | variable PERIOD method_call
 	       '''
 	p[0] = symbol_coder.c_concatenate(p)		
@@ -257,16 +257,18 @@ def p_condition(p):
 	'''mult_conds : condition log_oper mult_conds
 				  | condition
 				  '''
-	p[0] = symbol_coder.c_concatenate(p)
+	p[0] = symbol_coder.c_concatenate_with_character(p,' ')
 
 def p_condition_def(p):
 	'''condition : cmd operator cmd 
 				 | value operator value
 				 | variable operator variable
+				 | variable operator value
+				 | value operator variable
 				 | cmd
 				 | assign_value
 				 '''
-	p[0] = symbol_coder.c_concatenate(p)
+	p[0] = symbol_coder.c_concatenate_with_character(p,' ')
 
 def p_operator(p):
 	'''operator : EQUAL EQUAL
@@ -304,17 +306,17 @@ def p_ensure(p):
 	p[0] = symbol_coder.c_ensure(p)		 
 
 def p_class(p):
-	'class : CLASS CONSTANT inheritance symbol_ruby END'
+	'class : CLASS namespace inheritance symbol_ruby END'
 	p[0] = symbol_coder.c_class(p)
 
 def p_inheritance(p):
-	'''inheritance : INHERITANCE CONSTANT
+	'''inheritance : INHERITANCE namespace
 				   |
 				   '''	
 	p[0] = symbol_coder.c_inheritance(p)	
 
 def p_module_def(p):
-	'module : MODULE CONSTANT symbol_ruby END'
+	'module : MODULE namespace symbol_ruby END'
 	p[0] = symbol_coder.c_module(p)		   
 
 def p_array(p):
@@ -357,6 +359,13 @@ def p_arithmetical_operation(p):
 						   | assign_value OPERATOR cmd 
 						   | cmd OPERATOR cmd
 						   | assign_value OPERATOR assign_value
+	'''
+	p[0] = symbol_coder.c_concatenate(p)
+
+def p_namespace(p):
+	'''
+	namespace : CONSTANT COLON COLON namespace
+			  | CONSTANT
 	'''
 	p[0] = symbol_coder.c_concatenate(p)
 
