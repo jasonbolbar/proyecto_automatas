@@ -285,7 +285,9 @@ def p_condition(p):
 
 def p_condition_def(p):
 	'''condition : cmd operator cmd 
+				 | cmd operator variable
 				 | value operator value
+				 | variable operator cmd
 				 | variable operator variable
 				 | variable operator value
 				 | value operator variable
