@@ -24,8 +24,10 @@ def c_inheritance(p):
 		return ' ' + '<' + ' ' + p[2]	
 
 def c_module(p):
-	return 'module ' + p[2]	+ '\n' + c_add_tab(p[3]) + 'end\n' + p[5]
-
+	if len(p) == 6:
+		return 'module ' + p[2]	+ '\n' + c_add_tab(p[3]) + 'end\n' + p[5]
+	else:	
+		return 'module ' + p[2]	+ '\n' + c_add_tab(p[3]) + 'end'
 
 def c_replace_method_name(p):
 	if p[1] == '&*&':
@@ -44,9 +46,9 @@ def c_block(p):
 	else:
 		if p[1] == '{+}':
 			if len(p) == 4:
-				return 'do ' + '\n' + p[2] + 'end'	
+				return ' do ' + '\n' + c_add_tab(p[2]) + 'end'	
 			else :
-				return 'do ' + p[2] + '\n' + p[3] + 'end'	
+				return ' do ' + p[2] + '\n' + c_add_tab(p[3]) + 'end'	
 		else:
 			return c_concatenate(p)
 
@@ -54,7 +56,7 @@ def c_if(p):
 	return 'if ' + p[2] + '\n' + c_add_tab(p[3]) + 'end\n'
 
 def c_unless(p):
-	return 'if ' + p[2] + p[3] + 'end\n'
+	return 'if ' + p[2] + '\n' + c_add_tab(p[3]) + 'end\n'
 
 def c_elsif(p):
 	if len(p) == 1:
@@ -96,7 +98,7 @@ def c_ensure(p):
 
 def c_add_tab(p):
 	lines = str(p).split('\n')
-	return "".join(['	'+line+'\n' for line in lines if line != ''])
+	return "".join(['  '+line+'\n' for line in lines if line != ''])
 
 
 

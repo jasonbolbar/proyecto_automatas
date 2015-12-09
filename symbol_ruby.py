@@ -3,6 +3,8 @@ import sys
 import getopt
 
 def write_compiled(filename,compiled):
+	if compiled == None:
+		return None
 	file = open(filename.split('.')[0] + '.rb','w')
 	file.truncate()
 	file.write(compiled)

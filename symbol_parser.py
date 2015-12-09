@@ -11,14 +11,13 @@ def p_symbol_ruby(p):
 				   | new_cmd symbol_ruby
 				   | class symbol_ruby
 				   | module symbol_ruby
-				   | COMMENT symbol_ruby
 				   | __FILE__ symbol_ruby
 				   | __LINE__ symbol_ruby
 				   | __DIR__ symbol_ruby
 				   | method
 				   | new_cmd
 				   | class
-				   | COMMENT
+				   | module
 				   | __LINE__
 				   | __DIR__
 				   | __FILE__
@@ -30,7 +29,9 @@ def p_variable(p):
 	'''variable : IDENTIFIER 
 	      | instance_variable 
 	      | class_variable 
-	      | global_variable'''
+	      | global_variable
+	      | SELF
+	      '''
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_instance_variable(p):
@@ -61,7 +62,6 @@ def p_value(p):
 		 | SPECIAL_NUM 
 		 | array
 		 | hash
-		 | SELF
 	'''
 	p[0] = symbol_coder.c_concatenate(p)
   
@@ -108,7 +108,9 @@ def p_multiple_cmd(p):
 
 def p_new_cmd_single(p):
 	'''new_cmd : ins 
-	           | assig'''
+	           | assig
+	           | COMMENT
+	           '''
 	p[0] = symbol_coder.c_instructions(p)
 
 def p_ins_single(p):
@@ -122,7 +124,23 @@ def p_ins_single(p):
 
 def p_assig(p):
 	'''assig : variable EQUAL cmd
-			 | variable EQUAL assign_value'''
+			 | variable EQUAL assign_value
+			 | CONSTANT EQUAL cmd
+			 | CONSTANT EQUAL assign_value
+			 | variable PERIOD attribute_call EQUAL cmd
+			 | variable PERIOD attribute_call EQUAL assign_value
+			 | variable EQUAL variable PERIOD attribute_call 
+			 | variable PERIOD attribute_call EQUAL variable PERIOD attribute_call 
+	'''
+
+	p[0] = symbol_coder.c_concatenate(p)
+
+def p_attribute_call(p):
+	'''
+	attribute_call : IDENTIFIER PERIOD attribute_call
+				   | IDENTIFIER
+	'''
+
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_cmd(p):
@@ -183,10 +201,10 @@ def p_parameter_def(p):
 
 
 def p_method_call_name(p):
-	''' method_call_name : IDENTIFIER 
+	''' method_call_name : IDENTIFIER
 						 | SUPER 
 						 | YIELD 
-	                     | RETURN
+	                     | RETURN 
 	                     | ALIAS 
 	                     | RAISE
 	                     | NOT
@@ -330,7 +348,9 @@ def p_array(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_array_content(p):
-	'''array_content : assign_value COMMA array_content
+	'''array_content : cmd COMMA array_content
+					 | cmd
+					 | assign_value COMMA array_content
 					 | assign_value
 					 |
 					 '''
@@ -341,7 +361,13 @@ def p_hash(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 def p_hash_content(p):
-	'''hash_content : hash_key EQUAL LT assign_value
+	'''hash_content : hash_key EQUAL LT cmd COMMA hash_content
+					 | IDENTIFIER COLON cmd COMMA hash_content
+					 | hash_key EQUAL LT assign_value COMMA hash_content
+					 | IDENTIFIER COLON assign_value COMMA hash_content
+					 | hash_key EQUAL LT cmd
+					 | IDENTIFIER COLON cmd
+					 | hash_key EQUAL LT assign_value
 					 | IDENTIFIER COLON assign_value
 					 |
 					 '''
