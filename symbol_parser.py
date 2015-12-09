@@ -15,7 +15,13 @@ def p_symbol_ruby(p):
 				   | __FILE__ symbol_ruby
 				   | __LINE__ symbol_ruby
 				   | __DIR__ symbol_ruby
-				   | 
+				   | method
+				   | new_cmd
+				   | class
+				   | COMMENT
+				   | __LINE__
+				   | __DIR__
+				   | __FILE__
 	'''
 	p[0] = symbol_coder.c_concatenate(p)
 	
