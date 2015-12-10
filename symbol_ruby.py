@@ -2,6 +2,7 @@ import symbol_parser
 import sys
 import getopt
 
+# Escribir el codigo compilado en un archivo de formato .rb
 def write_compiled(filename,compiled):
 	if compiled == None:
 		return None
@@ -10,10 +11,13 @@ def write_compiled(filename,compiled):
 	file.write(compiled)
 	file.close()
 
-
+# Metodo principal
 def main(argv):
 	inputfile = ''
 	parser = symbol_parser.parser
+
+	#Obtiene los parametros enviados por linea de comandos
+
 	try:
 		opts, args = getopt.getopt(argv,"hi:",["ifile="])
 	except getopt.GetoptError:
@@ -25,6 +29,9 @@ def main(argv):
 			sys.exit()
 		elif opt in ('-i','--ifile'):
 			inputfile = arg
+
+	# Compilacion de codigo		
+			
 	compiled = parser.parse(open(inputfile).read())	
 	write_compiled(inputfile,compiled)	
 if __name__ == "__main__":

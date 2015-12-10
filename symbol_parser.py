@@ -1,9 +1,19 @@
+# Este archivo contiene la definicion de la gramatica que representa el analisis sintactico.
+# Para cada metodo se define la produccion y se llama a un metodo de symbol coder para saber
+# que accion tomar.
+
+
+# IMPORTS
+
 import symbol_lexer
 import symbol_coder
 import ply.yacc as yacc
-import pdb
 
+# Carga los tokens generados por symbol_lexer
 tokens = symbol_lexer.tokens
+
+
+################################# GRAMATICA #########################################
 
 def p_symbol_ruby(p):
 
@@ -404,13 +414,14 @@ def p_namespace(p):
 	p[0] = symbol_coder.c_concatenate(p)
 
 
+################################# GRAMATICA #########################################
+
+#### MANEJO DE ERROR ####
+
 def p_error(p):
 	print("Syntax error at token {} in line {}".format(p.value,p.lineno))	
 
 
-
-
-
-
+# INSTANCIACION DEL PARSER
 parser = yacc.yacc()
 

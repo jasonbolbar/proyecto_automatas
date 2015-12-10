@@ -1,3 +1,5 @@
+# Este archivo contiene los tokens y las expresiones regulares que representan las reglas del analisis sintactico
+
 #imports
 import ply.lex as lex
 
@@ -122,9 +124,13 @@ def t_whitespace(t):
     r'[ ]+'
     pass
 
+#### MANEJO DE ERROR LEXICO ####    
+
 
 def t_error(t):
     print 'Error in line {}, column {}, with {}'.format(t.lineno,t.lexpos,t.value)
     t.lexer.skip(1)
 
+
+# Instanciacion del lexer
 lexer = lex.lex()    
